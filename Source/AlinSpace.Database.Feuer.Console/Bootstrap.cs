@@ -32,12 +32,12 @@ namespace AlinSpace.Database.Feuer.Console
         static User CreateAdminUserIfNotExist(ITransaction transaction, IRepository<User, long> userRepository)
         {
             // If there is at least one admin user, return.
-            var optionalAdminUser = userRepository.Find(q => q.Where(u => u.Role == Role.Admin));
-            if (optionalAdminUser.HasValue)
-                return optionalAdminUser.Value;
+            var adminUser = userRepository.Find(q => q.Where(u => u.Role == Role.Admin));
+            if (adminUser != null)
+                return adminUser;
 
             // Create a new admin user.
-            var adminUser = new User()
+            adminUser = new User()
             {
                 Username = "alin",
                 PasswordHash = "test", // TODO: read from config
@@ -77,7 +77,7 @@ namespace AlinSpace.Database.Feuer.Console
             var contactPage = new Page()
             {
                 Name = "Index page",
-                Description = "This is the index page.",
+                Description = "This is the contact page.",
                 IsListed = false,
                 Owner = adminUser,
             };
@@ -86,8 +86,8 @@ namespace AlinSpace.Database.Feuer.Console
 
             var aboutPage = new Page()
             {
-                Name = "Index page",
-                Description = "This is the index page.",
+                Name = "About page",
+                Description = "This is the about page.",
                 IsListed = false,
                 Owner = adminUser,
             };

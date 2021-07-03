@@ -1,5 +1,4 @@
-﻿using AlinSpace.FluentResults;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -25,14 +24,14 @@ namespace AlinSpace.Database
         /// <param name="key">The key.</param>
         /// <param name="func">Queryable func.</param>
         /// <returns>Model.</returns>
-        Optional<TModel> Get(TKey key, Func<IQueryable<TModel>, IQueryable<TModel>> func = null);
+        TModel Get(TKey key, Func<IQueryable<TModel>, IQueryable<TModel>> func = null);
 
         /// <summary>
         /// Find a specific element.
         /// </summary>
         /// <param name="func">Queryable func.</param>
         /// <returns>Optional model.</returns>
-        Optional<TModel> Find(Func<IQueryable<TModel>, IQueryable<TModel>> func = null);
+        TModel Find(Func<IQueryable<TModel>, IQueryable<TModel>> func = null);
 
         /// <summary>
         /// Creates the specified model.

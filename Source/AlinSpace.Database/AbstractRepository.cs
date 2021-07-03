@@ -1,5 +1,4 @@
-﻿using AlinSpace.FluentResults;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -43,7 +42,7 @@ namespace AlinSpace.Database
         /// <param name="key">The key.</param>
         /// <param name="func">Queryable func.</param>
         /// <returns>Model.</returns>
-        public Optional<TModel> Get(TKey key, Func<IQueryable<TModel>, IQueryable<TModel>> func = null)
+        public TModel Get(TKey key, Func<IQueryable<TModel>, IQueryable<TModel>> func = null)
         {
             var tmpQueryable = queryable.Where(m => modelKeyFunc(m, key));
 
@@ -58,7 +57,7 @@ namespace AlinSpace.Database
         /// </summary>
         /// <param name="func">Queryable func.</param>
         /// <returns>Optional model.</returns>
-        public Optional<TModel> Find(Func<IQueryable<TModel>, IQueryable<TModel>> func = null)
+        public TModel Find(Func<IQueryable<TModel>, IQueryable<TModel>> func = null)
         {
             var tmpQueryable = queryable;
 

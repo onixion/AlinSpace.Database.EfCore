@@ -29,38 +29,38 @@ namespace AlinSpace.Database.Feuer.Console
         static void RetrieveAndPrintBootstrapData(ITransaction transaction)
         {
             var userRepository = transaction.GetRepository<User, long>();
-            var optionalAdminUser = userRepository.Find(q => q.Where(u => u.Role == Role.Admin));
+            var adminUser = userRepository.Find(
+                q => q
+                    .Where(u => u.Role == Role.Admin)
+                    .Include(u => u.Pages));
 
-            if (!optionalAdminUser.HasValue)
+            if (adminUser == null)
             {
                 System.Console.WriteLine($"No admin user found.");
             }
             else
             {
-                var adminUser = optionalAdminUser.Value;
-
                 System.Console.WriteLine($"Admin:");
                 System.Console.WriteLine($"  Id        = {adminUser.Id}");
                 System.Console.WriteLine($"  Username  = {adminUser.Username}");
                 System.Console.WriteLine($"  Firstname = {adminUser.Firstname}");
-                System.Console.WriteLine($"  Lastname  = {adminUser.Firstname}");
+                System.Console.WriteLine($"  Lastname  = {adminUser.Lastname}");
+                System.Console.WriteLine($"  Pages     = {adminUser.Pages.Count}");
             }
 
             var configurationRepository = transaction.GetRepository<Configuration, long>();
 
-            var optionalConfiguration = configurationRepository.Find(q
+            var configuration = configurationRepository.Find(q
                 => q.Include(c => c.IndexPage)
                     .Include(c => c.ContactPage)
                     .Include(c => c.AboutPage));
 
-            if (!optionalConfiguration.HasValue)
+            if (configuration == null)
             {
                 System.Console.WriteLine($"No configuration found.");
             }
             else
             {
-                var configuration = optionalConfiguration.Value;
-
                 System.Console.WriteLine($"Configuration:");
                 System.Console.WriteLine($"  IndexPage   = {configuration.IndexPage.Id}");
                 System.Console.WriteLine($"  ContactPage = {configuration.ContactPage.Id}");
