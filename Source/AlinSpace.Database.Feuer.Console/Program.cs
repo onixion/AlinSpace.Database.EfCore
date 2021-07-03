@@ -1,5 +1,6 @@
 ﻿using AlinSpace.Database.Feuer.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace AlinSpace.Database.Feuer.Console
 {
@@ -21,21 +22,52 @@ namespace AlinSpace.Database.Feuer.Console
 
             using var transaction = new Transaction(databaseContext);
 
+            Bootstrap.Setup(transaction);
+            RetrieveAndPrintBootstrapData(transaction);
+        }
 
+        static void RetrieveAndPrintBootstrapData(ITransaction transaction)
+        {
             var userRepository = transaction.GetRepository<User, long>();
+            var optionalAdminUser = userRepository.Find(q => q.Where(u => u.Role == Role.Admin));
 
-            var user = new User()
+            if (!optionalAdminUser.HasValue)
             {
-                Username = "TEST",
-                FirstName = "Alin",
-                LastName = "Andersen",
-            };
+                System.Console.WriteLine($"No admin user found.");
+            }
+            else
+            {
+                var adminUser = optionalAdminUser.Value;
 
-            userRepository.Create(user);
+                System.Console.WriteLine($"Admin:");
+                System.Console.WriteLine($"  Id        = {adminUser.Id}");
+                System.Console.WriteLine($"  Username  = {adminUser.Username}");
+                System.Console.WriteLine($"  Firstname = {adminUser.Firstname}");
+                System.Console.WriteLine($"  Lastname  = {adminUser.Firstname}");
+            }
 
-            var t = transaction.Commit();
+            var configurationRepository = transaction.GetRepository<Configuration, long>();
 
+            var optionalConfiguration = configurationRepository.Find(q
+                => q.Include(c => c.IndexPage)
+                    .Include(c => c.ContactPage)
+                    .Include(c => c.AboutPage));
 
+            if (!optionalConfiguration.HasValue)
+            {
+                System.Console.WriteLine($"No configuration found.");
+            }
+            else
+            {
+                var configuration = optionalConfiguration.Value;
+
+                System.Console.WriteLine($"Configuration:");
+                System.Console.WriteLine($"  IndexPage   = {configuration.IndexPage.Id}");
+                System.Console.WriteLine($"  ContactPage = {configuration.ContactPage.Id}");
+                System.Console.WriteLine($"  AboutPage   = {configuration.AboutPage.Id}");
+            }
+
+            var pageRepository = transaction.GetRepository<Page, long>();
         }
     }
 }

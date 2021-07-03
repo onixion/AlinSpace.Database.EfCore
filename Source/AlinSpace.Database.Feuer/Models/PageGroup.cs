@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 namespace AlinSpace.Database.Feuer.Models
 {
     /// <summary>
-    /// Represents the page model.
+    /// Represents the page group model.
     /// </summary>
-    public class Page
+    public class PageGroup
     {
         /// <summary>
         /// Gets or sets the ID.
@@ -16,10 +16,10 @@ namespace AlinSpace.Database.Feuer.Models
         public long Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the page name.
+        /// Gets or sets the name.
         /// </summary>
         [Required]
-        [MaxLength(30)]
+        [MaxLength(50)]
         public string Name { get; set; }
 
         /// <summary>
@@ -47,9 +47,9 @@ namespace AlinSpace.Database.Feuer.Models
         public long Priority { get; set; }
 
         /// <summary>
-        /// Gets or sets the body HTML of the page.
+        /// Gets or sets the pages.
         /// </summary>
-        public string BodyHtml { get; set; }
+        public IList<Page> Pages { get; set; } = new List<Page>();
 
         /// <summary>
         /// Gets or sets the tags.

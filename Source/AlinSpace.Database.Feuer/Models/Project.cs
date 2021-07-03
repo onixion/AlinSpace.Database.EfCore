@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace AlinSpace.Database.Feuer.Models
 {
     /// <summary>
-    /// Represents the page model.
+    /// Represents the project model.
     /// </summary>
-    public class Page
+    public class Project
     {
         /// <summary>
         /// Gets or sets the ID.
@@ -16,10 +15,10 @@ namespace AlinSpace.Database.Feuer.Models
         public long Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the page name.
+        /// Gets or sets the name.
         /// </summary>
         [Required]
-        [MaxLength(30)]
+        [MaxLength(50)]
         public string Name { get; set; }
 
         /// <summary>
@@ -39,7 +38,7 @@ namespace AlinSpace.Database.Feuer.Models
         public bool IsListed { get; set; }
 
         /// <summary>
-        /// Gets or sets the priority.
+        /// Priority.
         /// </summary>
         /// <remarks>
         /// The higher the priority, the higher the value.
@@ -47,17 +46,24 @@ namespace AlinSpace.Database.Feuer.Models
         public long Priority { get; set; }
 
         /// <summary>
-        /// Gets or sets the body HTML of the page.
+        /// URL.
         /// </summary>
-        public string BodyHtml { get; set; }
+        [MaxLength(100)]
+        public string Url { get; set; }
 
         /// <summary>
-        /// Gets or sets the tags.
+        /// Repository URL.
         /// </summary>
-        public IList<Tag> Tags { get; set; } = new List<Tag>();
+        [MaxLength(100)]
+        public string RepositoryUrl { get; set; }
 
         /// <summary>
-        /// Gets or sets the owner.
+        /// Page.
+        /// </summary>
+        public Page Page { get; set; }
+
+        /// <summary>
+        /// Owner.
         /// </summary>
         [Required]
         public User Owner { get; set; }
