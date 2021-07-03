@@ -6,7 +6,7 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Copyright>Copyright © 2021 Alin Andersen</Copyright>
-    <PackageLicenseExpression>mit</PackageLicenseExpression>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>alinspace database entityframework ef alin space</PackageTags>
     <PackageIcon>Logo.jpg</PackageIcon>
     <RepositoryUrl>https://github.com/onixion/AlinSpace.Database.git</RepositoryUrl>
