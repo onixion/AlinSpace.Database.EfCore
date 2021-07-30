@@ -1,35 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 
 namespace AlinSpace.Database
 {
     /// <summary>
-    /// Extensions for <see cref="IRepository{TModel, TKey}"/>.
+    /// Extensions for <see cref="IRepository{TEntity, TKey}"/>.
     /// </summary>
     public static class RepositoryExtensions
     {
         /// <summary>
         /// Get a specific page.
         /// </summary>
-        /// <typeparam name="TModel">Type of the model.</typeparam>
+        /// <typeparam name="TEntity">Type of the entity.</typeparam>
         /// <typeparam name="TKey">Type of the key.</typeparam>
         /// <param name="repository">Repository to retrieve the page from.</param>
         /// <param name="page">Page number.</param>
         /// <param name="pageSize">Page size.</param>
-        /// <param name="func">Queryable func.</param>
-        /// <returns>Enumerable of items in the page.</returns>
-        public static IEnumerable<TModel> GetPage<TModel, TKey>(
-            this IRepository<TModel, TKey> repository, 
+        /// <returns>Queryable of the page.</returns>
+        public static IQueryable<TEntity> GetPage<TEntity, TKey>(
+            this IRepository<TEntity, TKey> repository, 
             int page, 
-            int pageSize = 20,
-            Func<IQueryable<TModel>, IQueryable<TModel>> func = null)
-            where TModel : class
+            int pageSize)
+            where TEntity : class
         {
-            return repository.Get(
-                skip: page * pageSize,
-                take: pageSize,
-                func: func);
+            if (page <= 0)
+                page = 1;
+
+            if (pageSize <= 0)
+                pageSize = 1;
+
+            return repository
+                .NewQuery()
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize);
         }
     }
 }

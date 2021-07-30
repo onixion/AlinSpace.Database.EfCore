@@ -15,8 +15,8 @@ namespace AlinSpace.Database.Ef
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="dbContext">DB context.</param>
-        public AbstractTransaction(DbContext dbContext) : base()
+        /// <param name="dbContext">Database context.</param>
+        public AbstractTransaction(DbContext dbContext)
         {
             this.dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
@@ -24,20 +24,18 @@ namespace AlinSpace.Database.Ef
         /// <summary>
         /// Commits the changes.
         /// </summary>
-        /// <return>The number of state entries written to the underlying database.</return>
-        public override int Commit()
+        public override void Commit()
         {
-            return dbContext.SaveChanges();
+            dbContext.SaveChanges();
         }
 
         /// <summary>
         /// Commits the changes asynchronously.
         /// </summary>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The number of state entries written to the underlying database.</returns>
-        public override Task<int> CommitAsync(CancellationToken cancellationToken = default)
+        public override async Task CommitAsync(CancellationToken cancellationToken = default)
         {
-            return dbContext.SaveChangesAsync(cancellationToken);
+            await dbContext.SaveChangesAsync(cancellationToken);
         }
 
         bool disposed;
@@ -53,19 +51,6 @@ namespace AlinSpace.Database.Ef
             disposed = true;
 
             dbContext.Dispose();
-        }
-
-        /// <summary>
-        /// Dispose asynchronously.
-        /// </summary>
-        public override ValueTask DisposeAsync()
-        {
-            if (disposed)
-                return ValueTask.CompletedTask;
-
-            disposed = true;
-
-            return dbContext.DisposeAsync();
         }
     }
 }

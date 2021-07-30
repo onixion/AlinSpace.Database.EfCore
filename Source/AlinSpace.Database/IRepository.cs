@@ -1,70 +1,55 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
+using System.Threading.Tasks;
 
 namespace AlinSpace.Database
 {
     /// <summary>
     /// Represents the repository interface.
     /// </summary>
-    /// <typeparam name="TModel">Type of the model.</typeparam>
+    /// <typeparam name="TEntity">Type of the entity.</typeparam>
     /// <typeparam name="TKey">Type of the key.</typeparam>
-    public interface IRepository<TModel, TKey> where TModel : class
+    public interface IRepository<TEntity, TKey> where TEntity : class
     {
         /// <summary>
-        /// Checks if the key exists.
+        /// Returns a new query.
         /// </summary>
-        /// <param name="key">The key.</param>
-        /// <returns>True, if it exists; false otherwise.</returns>
-        bool Exists(TKey key);
+        /// <returns>New query.</returns>
+        IQueryable<TEntity> NewQuery();
 
         /// <summary>
-        /// Gets the specified key.
+        /// Adds entity.
         /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="func">Queryable func.</param>
-        /// <returns>Model.</returns>
-        TModel Get(TKey key, Func<IQueryable<TModel>, IQueryable<TModel>> func = null);
+        /// <param name="entity">Entity to add.</param>
+        void Add(TEntity entity);
 
         /// <summary>
-        /// Find a specific element.
+        /// Adds entity asynchronously.
         /// </summary>
-        /// <param name="func">Queryable func.</param>
-        /// <returns>Optional model.</returns>
-        TModel Find(Func<IQueryable<TModel>, IQueryable<TModel>> func = null);
+        /// <param name="entity">Entity to add.</param>
+        Task AddAsync(TEntity entity);
 
         /// <summary>
-        /// Creates the specified model.
+        /// Add or update entity.
         /// </summary>
-        /// <param name="model">The model.</param>
-        void Create(TModel model);
+        /// <param name="entity">Entity to add or update.</param>
+        void AddOrUpdate(TEntity entity);
 
         /// <summary>
-        /// Updates the specified model.
+        /// Add or update entity asynchronously.
         /// </summary>
-        /// <param name="model">The model.</param>
-        void Update(TModel model);
+        /// <param name="entity">Entity to add or update.</param>
+        Task AddOrUpdateAsync(TEntity entity);
 
         /// <summary>
-        /// Deletes the specified model with the given key.
+        /// Update entity.
         /// </summary>
-        /// <param name="model">The model.</param>
-        void Delete(TModel model);
+        /// <param name="entity">Entity to update.</param>
+        void Update(TEntity entity);
 
         /// <summary>
-        /// Get count of elements.
+        /// Delete entity.
         /// </summary>
-        /// <param name="func">Queryable func.</param>
-        /// <returns>Number of elements.</returns>
-        int GetCount(Func<IQueryable<TModel>, IQueryable<TModel>> func = null);
-
-        /// <summary>
-        /// Get elements.
-        /// </summary>
-        /// <param name="skip">Number of items to skip.</param>
-        /// <param name="take">Number of items to take.</param>
-        /// <param name="func">Queryable func.</param>
-        /// <returns>Enumerable of elements.</returns>
-        IEnumerable<TModel> Get(int skip = 0, int take = 20, Func<IQueryable<TModel>, IQueryable<TModel>> func = null);
+        /// <param name="entity">Entity to delete.</param>
+        void Delete(TEntity entity);
     }
 }

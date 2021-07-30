@@ -7,27 +7,25 @@ namespace AlinSpace.Database
     /// <summary>
     /// Represents the transaction interface.
     /// </summary>
-    public interface ITransaction : IDisposable, IAsyncDisposable
+    public interface ITransaction : IDisposable
     {
         /// <summary>
         /// Get repository.
         /// </summary>
-        /// <typeparam name="TModel">Type of the model.</typeparam>
+        /// <typeparam name="TEntity">Type of the entity.</typeparam>
         /// <typeparam name="TKey">Type of the key.</typeparam>
         /// <returns>Repository.</returns>
-        IRepository<TModel, TKey> GetRepository<TModel, TKey>() where TModel : class;
+        IRepository<TEntity, TKey> GetRepository<TEntity, TKey>() where TEntity : class;
 
         /// <summary>
         /// Commits the changes.
         /// </summary>
-        /// <return>The number of state entries written to the underlying database.</return>
-        int Commit();
+        void Commit();
 
         /// <summary>
         /// Commits the changes asynchronously.
         /// </summary>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The number of state entries written to the underlying database.</returns>
-        Task<int> CommitAsync(CancellationToken cancellationToken = default);
+        Task CommitAsync(CancellationToken cancellationToken = default);
     }
 }

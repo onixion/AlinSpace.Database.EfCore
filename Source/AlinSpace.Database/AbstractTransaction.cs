@@ -18,27 +18,27 @@ namespace AlinSpace.Database
         /// <summary>
         /// Register repository.
         /// </summary>
-        /// <typeparam name="TModel">Type of the model.</typeparam>
+        /// <typeparam name="TEntity">Type of the entity.</typeparam>
         /// <typeparam name="TKey">Type of the primary key.</typeparam>
         /// <param name="repositoryProvider">Repository provider.</param>
-        protected void RegisterRepository<TModel, TKey>(Func<IRepository<TModel, TKey>> repositoryProvider) where TModel : class
+        protected void RegisterRepository<TEntity, TKey>(Func<IRepository<TEntity, TKey>> repositoryProvider) where TEntity : class
         {
-            repositories[(typeof(TModel), typeof(TKey))] = new Lazy<object>(() => repositoryProvider());
+            repositories[(typeof(TEntity), typeof(TKey))] = new Lazy<object>(() => repositoryProvider());
         }
 
         /// <summary>
         /// Get repository.
         /// </summary>
-        /// <typeparam name="TModel">Type of the model.</typeparam>
+        /// <typeparam name="TEntity">Type of the entity.</typeparam>
         /// <typeparam name="TKey">Type of the key.</typeparam>
         /// <returns>Repository.</returns>
-        public IRepository<TModel, TKey> GetRepository<TModel, TKey>() where TModel : class
+        public IRepository<TEntity, TKey> GetRepository<TEntity, TKey>() where TEntity : class
         {
-            if (!repositories.TryGetValue((typeof(TModel), typeof(TKey)), out Lazy<object> repository))
-                throw new Exception($"No repository found.");
+            if (!repositories.TryGetValue((typeof(TEntity), typeof(TKey)), out Lazy<object> repository))
+                throw new Exception($"No repository found found for entity type {typeof(TEntity)} and key type {typeof(TKey)}.");
 
-            if (repository.Value is not IRepository<TModel, TKey> specificRepository)
-                throw new Exception($"Repository type wrong.");
+            if (!(repository.Value is IRepository<TEntity, TKey> specificRepository))
+                throw new Exception($"Registered repository with wrong type. Please check the repository registrations.");
 
             return specificRepository;
         }
@@ -46,15 +46,13 @@ namespace AlinSpace.Database
         /// <summary>
         /// Commits the changes.
         /// </summary>
-        /// <return>The number of state entries written to the underlying database.</return>
-        public abstract int Commit();
+        public abstract void Commit();
 
         /// <summary>
         /// Commits the changes asynchronously.
         /// </summary>
         /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>The number of state entries written to the underlying database.</returns>
-        public abstract Task<int> CommitAsync(CancellationToken cancellationToken = default);
+        public abstract Task CommitAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Dispose.
