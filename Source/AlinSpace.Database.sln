@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlinSpace.Database", "AlinS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlinSpace.Database.Ef", "AlinSpace.Database.Ef\AlinSpace.Database.Ef.csproj", "{527CF036-1CA4-459B-ABCD-BF3126681648}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlinSpace.Database.Ef.Testing", "AlinSpace.Database.Ef.Testing\AlinSpace.Database.Ef.Testing.csproj", "{CBAF9164-631F-41FF-87C1-4EAFEA857A56}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{527CF036-1CA4-459B-ABCD-BF3126681648}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{527CF036-1CA4-459B-ABCD-BF3126681648}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{527CF036-1CA4-459B-ABCD-BF3126681648}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBAF9164-631F-41FF-87C1-4EAFEA857A56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBAF9164-631F-41FF-87C1-4EAFEA857A56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBAF9164-631F-41FF-87C1-4EAFEA857A56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBAF9164-631F-41FF-87C1-4EAFEA857A56}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

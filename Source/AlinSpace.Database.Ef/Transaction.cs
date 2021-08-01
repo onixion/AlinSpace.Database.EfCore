@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 namespace AlinSpace.Database.Ef
 {
     /// <summary>
-    /// Represents an abstract implementation of <see cref="ITransaction"/> for EF.
+    /// Represents the implementation of <see cref="ITransaction"/> for EF.
     /// </summary>
-    public abstract class AbstractTransaction : Database.AbstractTransaction
+    public sealed class Transaction : AbstractTransaction
     {
         private readonly DbContext dbContext;
 
@@ -16,7 +16,7 @@ namespace AlinSpace.Database.Ef
         /// Constructor.
         /// </summary>
         /// <param name="dbContext">Database context.</param>
-        public AbstractTransaction(DbContext dbContext)
+        public Transaction(DbContext dbContext, RepositoryRegistry repositoryRegistry) : base(repositoryRegistry)
         {
             this.dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
