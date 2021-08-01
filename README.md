@@ -1,4 +1,4 @@
-![Thumbnail](./Assets/Logo.png)
+![Thumbnail](./Assets/Icon.png)
 
 # AlinSpace.Database
 AlinSpace database repository and transaction interfaces.
