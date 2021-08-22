@@ -13,7 +13,10 @@ using var transaction = GetTransaction();
 var userRepository = transaction.GetRepository<User, long>();
 
 // Retrieve a user.
-var myUser = userRepository.Query().Where(u => u.Username == "MyUser").First();
+var myUser = userRepository
+    .NewQuery()
+    .Where(u => u.Username == "MyUser")
+    .First();
 ```
 
 # AlinSpace.Database.Ef
