@@ -1,11 +1,9 @@
-﻿namespace AlinSpace.Database.Ef.Testing.Models
+﻿using AlinSpace.Database.Models;
+
+namespace AlinSpace.Database.Ef.Testing.Models
 {
-    public class Product
+    public class Product : AbstractTenantEntity
     {
-        public long Id { get; set; }
-
-        public string Name { get; set; }
-
         public string Description { get; set; }
 
         public double Price { get; set; }

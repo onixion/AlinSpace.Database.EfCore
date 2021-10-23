@@ -3,31 +3,26 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AlinSpace.Database.Ef.Testing
 {
-    /// <summary>
-    /// Test database context.
-    /// </summary>
-    public class DatabaseContext : DbContext
+    public class DatabaseContext : AbstractTenantDbContext
     {
-        /// <summary>
-        /// Gets or sets the orders.
-        /// </summary>
-        public DbSet<Order> Orders { get; set; }
+        public DbSet<Order> Order { get; set; }
 
-        /// <summary>
-        /// Gets or sets the persons.
-        /// </summary>
-        public DbSet<Person> Persons { get; set; }
+        public DbSet<Person> Person { get; set; }
 
-        /// <summary>
-        /// Gets or sets the products.
-        /// </summary>
-        public DbSet<Product> Products { get; set; }
+        public DbSet<Product> Product { get; set; }
 
-        /// <summary>
-        /// Constructor.
-        /// </summary>
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
+
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            new Order().OnModelCreating(modelBuilder, typeof(Order));
+            new Person().OnModelCreating(modelBuilder, typeof(Person));
+            new Product().OnModelCreating(modelBuilder, typeof(Product));
         }
     }
 }

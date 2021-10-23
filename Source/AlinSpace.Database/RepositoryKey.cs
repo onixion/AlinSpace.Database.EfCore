@@ -13,17 +13,11 @@ namespace AlinSpace.Database
         public Type EntityType { get; }
 
         /// <summary>
-        /// Get key type.
-        /// </summary>
-        public Type KeyType { get; }
-
-        /// <summary>
         /// Constructor.
         /// </summary>
-        public RepositoryKey(Type entityType, Type keyType)
+        public RepositoryKey(Type entityType)
         {
             EntityType = entityType ?? throw new ArgumentNullException(nameof(entityType));
-            KeyType = keyType ?? throw new ArgumentNullException(nameof(keyType));
         }
 
         /// <summary>
@@ -31,7 +25,7 @@ namespace AlinSpace.Database
         /// </summary>
         public override int GetHashCode()
         {
-            return EntityType.GetHashCode() ^ KeyType.GetHashCode();
+            return EntityType.GetHashCode();
         }
     }
 }

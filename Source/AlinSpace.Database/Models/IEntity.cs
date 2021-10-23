@@ -1,17 +1,53 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace AlinSpace.Database.Models
 {
     /// <summary>
     /// Represents the entity interface.
     /// </summary>
-    /// <typeparam name="TId">Type of the ID field.</typeparam>
-    public interface IEntity<TId>
+    public interface IEntity
     {
         /// <summary>
         /// Gets or sets the ID of the entity.
         /// </summary>
         [Key]
-        TId Id { get; set; }
+        long Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name.
+        /// </summary>
+        string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the creation timestamp.
+        /// </summary>
+        /// <remarks>
+        /// In UTC.
+        /// </remarks>
+        [Required]
+        DateTime CreationTimestamp { get; set; }
+
+        /// <summary>
+        /// Gets or sets the modification timestamp.
+        /// </summary>
+        /// <remarks>
+        /// In UTC.
+        /// </remarks>
+        [Required]
+        DateTime ModificationTimestamp { get; set; }
+
+        /// <summary>
+        /// Gets or sets meta data.
+        /// </summary>
+        string MetaData { get; set; }
+
+        /// <summary>
+        /// On model creating.
+        /// </summary>
+        /// <param name="modelBuilder">Model builder.</param>
+        /// <param name="entityType">Model builder.</param>
+        void OnModelCreating(ModelBuilder modelBuilder, Type entityType);
     }
 }

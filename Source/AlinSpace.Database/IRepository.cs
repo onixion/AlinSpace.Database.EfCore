@@ -7,8 +7,7 @@ namespace AlinSpace.Database
     /// Represents the repository interface.
     /// </summary>
     /// <typeparam name="TEntity">Type of the entity.</typeparam>
-    /// <typeparam name="TKey">Type of the key.</typeparam>
-    public interface IRepository<TEntity, TKey> where TEntity : class
+    public interface IRepository<TEntity> where TEntity : class
     {
         /// <summary>
         /// Returns a new query.

@@ -13,9 +13,8 @@ namespace AlinSpace.Database
         /// Get repository.
         /// </summary>
         /// <typeparam name="TEntity">Type of the entity.</typeparam>
-        /// <typeparam name="TKey">Type of the key.</typeparam>
         /// <returns>Repository.</returns>
-        IRepository<TEntity, TKey> GetRepository<TEntity, TKey>() where TEntity : class;
+        IRepository<TEntity> GetRepository<TEntity>() where TEntity : class;
 
         /// <summary>
         /// Commits the changes.

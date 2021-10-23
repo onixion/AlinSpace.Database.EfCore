@@ -11,13 +11,12 @@ namespace AlinSpace.Database
         /// Get a specific page.
         /// </summary>
         /// <typeparam name="TEntity">Type of the entity.</typeparam>
-        /// <typeparam name="TKey">Type of the key.</typeparam>
         /// <param name="repository">Repository to retrieve the page from.</param>
         /// <param name="page">Page number.</param>
         /// <param name="pageSize">Page size.</param>
         /// <returns>Queryable of the page.</returns>
-        public static IQueryable<TEntity> GetPage<TEntity, TKey>(
-            this IRepository<TEntity, TKey> repository, 
+        public static IQueryable<TEntity> GetPage<TEntity>(
+            this IRepository<TEntity> repository, 
             int page, 
             int pageSize)
             where TEntity : class

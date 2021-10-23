@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 namespace AlinSpace.Database.Ef
 {
     /// <summary>
-    /// Represents an implementation of <see cref="AbstractRepository{TEntity, TKey}"/> for EF.
+    /// Represents an implementation of <see cref="IRepository{TEntity}"/> for EF.
     /// </summary>
     /// <typeparam name="TEntity">Type of the entity.</typeparam>
-    /// <typeparam name="TKey">Type of the key.</typeparam>
-    public class Repository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntity : class
+    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         private readonly DbContext dbContext;
         private readonly DbSet<TEntity> dbSet;

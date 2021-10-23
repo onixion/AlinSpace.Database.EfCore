@@ -5,10 +5,12 @@ namespace AlinSpace.Database.Ef.Testing
 {
     static class DatabaseManager
     {
+        public static readonly string ConnectionString = "Data source=Test.db";
+
         public static void Create()
         {
             var dbContextOptions = new DbContextOptionsBuilder<DatabaseContext>()
-                .UseSqlite("Data source=Test.db")
+                .UseSqlite(ConnectionString)
                 .EnableDetailedErrors()
                 .EnableSensitiveDataLogging()
                 .EnableServiceProviderCaching()
