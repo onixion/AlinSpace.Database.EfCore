@@ -28,9 +28,7 @@ namespace AlinSpace.Database.Ef
         {
             var entries = dbContext.ChangeTracker
                 .Entries()
-                .Where(
-                    e => e.Entity is IEntity &&
-                    (e.State == EntityState.Added || e.State == EntityState.Modified));
+                .Where(e => e.Entity is IEntity && (e.State == EntityState.Added || e.State == EntityState.Modified));
 
             foreach (var entry in entries)
             {

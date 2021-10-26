@@ -18,7 +18,7 @@ namespace AlinSpace.Database.Ef.Testing
 
             try
             {
-                var factory = FactoryBuilder<DatabaseContext>
+                var factory = TransactionFactoryBuilder<DatabaseContext>
                     .New()
                     .WithRegistry((c, b) =>
                     {
@@ -125,7 +125,7 @@ namespace AlinSpace.Database.Ef.Testing
 
             try
             {
-                var factory = FactoryBuilder<DatabaseContext>
+                var factory = TransactionFactoryBuilder<DatabaseContext>
                     .New()
                     .WithRegistry((c, b) =>
                     {

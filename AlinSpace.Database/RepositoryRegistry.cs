@@ -20,7 +20,7 @@ namespace AlinSpace.Database
         {
             foreach(var registration in registrations)
             {
-                repositories[registration.Key.EntityType] = registration.RepositoryProvider;
+                repositories[registration.Key] = registration.RepositoryProvider;
             }
         }
 

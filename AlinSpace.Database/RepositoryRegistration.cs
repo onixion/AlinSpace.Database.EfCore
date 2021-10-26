@@ -10,7 +10,7 @@ namespace AlinSpace.Database
         /// <summary>
         /// Gets the repository key.
         /// </summary>
-        public RepositoryKey Key { get; }
+        public Type Key { get; }
 
         /// <summary>
         /// Gets the repository provider.
@@ -20,7 +20,7 @@ namespace AlinSpace.Database
         /// <summary>
         /// Constructor.
         /// </summary>
-        public RepositoryRegistration(RepositoryKey key, Lazy<object> repositoryProvider)
+        public RepositoryRegistration(Type key, Lazy<object> repositoryProvider)
         {
             Key = key ?? throw new ArgumentNullException(nameof(key));
             RepositoryProvider = repositoryProvider ?? throw new ArgumentNullException(nameof(repositoryProvider));

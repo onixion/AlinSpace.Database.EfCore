@@ -6,7 +6,7 @@ namespace AlinSpace.Database
     /// Represents the factory.
     /// </summary>
     /// <typeparam name="TContext">Type of context.</typeparam>
-    public class Factory<TContext> where TContext : class
+    public class TransactionFactory<TContext> where TContext : class
     {
         private readonly Action<TContext, RepositoryRegistryBuilder> registryConfigurator;
         private readonly Func<TContext, RepositoryRegistry, ITransaction> transactionProvider;
@@ -14,9 +14,9 @@ namespace AlinSpace.Database
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="registryConfigurator"></param>
-        /// <param name="transactionProvider"></param>
-        public Factory(
+        /// <param name="registryConfigurator">Registry configurator.</param>
+        /// <param name="transactionProvider">Transaction provider.</param>
+        public TransactionFactory(
             Action<TContext, RepositoryRegistryBuilder> registryConfigurator,
             Func<TContext, RepositoryRegistry, ITransaction> transactionProvider)
         {

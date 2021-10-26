@@ -3,10 +3,10 @@
 namespace AlinSpace.Database
 {
     /// <summary>
-    /// Represents the factory builder.
+    /// Represents the transaction factory builder.
     /// </summary>
     /// <typeparam name="TContext">Type of context.</typeparam>
-    public class FactoryBuilder<TContext> where TContext : class
+    public class TransactionFactoryBuilder<TContext> where TContext : class
     {
         private Action<TContext, RepositoryRegistryBuilder> registryConfigurator;
         private Func<TContext, RepositoryRegistry, ITransaction> transactionProvider;
@@ -15,16 +15,16 @@ namespace AlinSpace.Database
         /// Shortcut constructor.
         /// </summary>
         /// <returns>Factory builder.</returns>
-        public static FactoryBuilder<TContext> New()
+        public static TransactionFactoryBuilder<TContext> New()
         {
-            return new FactoryBuilder<TContext>();
+            return new TransactionFactoryBuilder<TContext>();
         }
 
         /// <summary>
         /// With registry.
         /// </summary>
         /// <param name="registryConfigurator">Registry configurator.</param>
-        public FactoryBuilder<TContext> WithRegistry(Action<TContext, RepositoryRegistryBuilder> registryConfigurator)
+        public TransactionFactoryBuilder<TContext> WithRegistry(Action<TContext, RepositoryRegistryBuilder> registryConfigurator)
         {
             this.registryConfigurator = registryConfigurator;
             return this;
@@ -34,7 +34,7 @@ namespace AlinSpace.Database
         /// With transaction provider.
         /// </summary>
         /// <param name="transactionProvider">Transaction provider.</param>
-        public FactoryBuilder<TContext> WithTransaction(Func<TContext, RepositoryRegistry, ITransaction> transactionProvider)
+        public TransactionFactoryBuilder<TContext> WithTransaction(Func<TContext, RepositoryRegistry, ITransaction> transactionProvider)
         {
             this.transactionProvider = transactionProvider;
             return this;
@@ -44,9 +44,9 @@ namespace AlinSpace.Database
         /// Builds factory.
         /// </summary>
         /// <returns>Factory.</returns>
-        public Factory<TContext> Build()
+        public TransactionFactory<TContext> Build()
         {
-            return new Factory<TContext>(registryConfigurator, transactionProvider);
+            return new TransactionFactory<TContext>(registryConfigurator, transactionProvider);
         }
     }
 }
