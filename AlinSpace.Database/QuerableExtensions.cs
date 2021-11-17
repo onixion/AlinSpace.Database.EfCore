@@ -1,5 +1,4 @@
-﻿using AlinSpace.Database.Models;
-using System;
+﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -13,12 +12,14 @@ namespace AlinSpace.Database
         /// <summary>
         /// Scope querable for tenant.
         /// </summary>
+        /// <typeparam name="TTenantEntity">Type of tenant entity.</typeparam>
+        /// <typeparam name="TPrimaryKey">Type of primary key.</typeparam>
         /// <param name="queryable">Queryable.</param>
         /// <param name="tenantId">Tenant ID.</param>
         /// <returns>Queryable scopped to given tenant.</returns>
-        public static IQueryable<ITenantEntity> ScopeTenant(
-            this IQueryable<AbstractTenantEntity> queryable,
-            long tenantId)
+        public static IQueryable<TTenantEntity> ScopeTenant<TTenantEntity, TPrimaryKey>(
+            this IQueryable<TTenantEntity> queryable,
+            long tenantId) where TTenantEntity : ITenantEntity<TPrimaryKey>
         {
             return queryable.Where(x => x.TenantId == tenantId);
         }

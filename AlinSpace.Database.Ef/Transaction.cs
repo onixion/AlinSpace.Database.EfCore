@@ -1,7 +1,5 @@
-﻿using AlinSpace.Database.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -26,21 +24,21 @@ namespace AlinSpace.Database.Ef
 
         void PreCommit()
         {
-            var entries = dbContext.ChangeTracker
-                .Entries()
-                .Where(e => e.Entity is IEntity && (e.State == EntityState.Added || e.State == EntityState.Modified));
+            //var entries = dbContext.ChangeTracker
+            //    .Entries()
+            //    .Where(e => e.Entity is IEntity && (e.State == EntityState.Added || e.State == EntityState.Modified));
 
-            foreach (var entry in entries)
-            {
-                var entity = entry.Entity as IEntity;
+            //foreach (var entry in entries)
+            //{
+            //    var entity = entry.Entity as IEntity;
 
-                entity.ModificationTimestamp = DateTime.UtcNow;
+            //    entity.ModificationTimestamp = DateTime.UtcNow;
 
-                if (entry.State == EntityState.Added)
-                {
-                    entity.CreationTimestamp = DateTime.UtcNow;
-                }
-            }
+            //    if (entry.State == EntityState.Added)
+            //    {
+            //        entity.CreationTimestamp = DateTime.UtcNow;
+            //    }
+            //}
         }
 
         /// <summary>

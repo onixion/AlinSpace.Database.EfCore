@@ -1,17 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace AlinSpace.Database.Models
+namespace AlinSpace.Database
 {
     /// <summary>
-    /// Represents the tenant entity.
+    /// Represents the abstract tenant entity.
     /// </summary>
-    public class AbstractTenantEntity : AbstractEntity, ITenantEntity
+    /// <typeparam name="TPrimaryKey">Type of primary key.</typeparam>
+    public abstract class AbstractTenantEntity<TPrimaryKey> : AbstractEntity<TPrimaryKey>, ITenantEntity<TPrimaryKey>
     {
         /// <summary>
         /// Gets or sets the tenant ID.
         /// </summary>
-        public long? TenantId { get; set; }
+        public long TenantId { get; set; }
 
         /// <summary>
         /// Gets or sets the tenant.
@@ -27,7 +28,7 @@ namespace AlinSpace.Database.Models
         {
             base.OnModelCreating(modelBuilder, entityType);
 
-            modelBuilder.Entity<AbstractTenantEntity>()
+            modelBuilder.Entity<AbstractTenantEntity<TPrimaryKey>>()
                 .HasOne(x => x.Tenant)
                 .WithMany()
                 .HasForeignKey(x => x.TenantId)

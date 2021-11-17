@@ -16,8 +16,7 @@ namespace AlinSpace.Database.Ef
             this RepositoryRegistryBuilder repositoryRegistryBuilder,
             AbstractTenantDbContext dbContext) 
         {
-            var repositoryKey = typeof(Models.Tenant);
-            repositoryRegistryBuilder.Register(new RepositoryRegistration(repositoryKey, new Lazy<object>(() => new Repository<Database.Models.Tenant>(dbContext, dbContext.Tenant))));
+            repositoryRegistryBuilder.Register(new RepositoryRegistration(typeof(Tenant), new Lazy<object>(() => new Repository<Tenant>(dbContext, dbContext.Tenant))));
 
             return repositoryRegistryBuilder;
         }

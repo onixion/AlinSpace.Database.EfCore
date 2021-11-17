@@ -1,5 +1,4 @@
-﻿using AlinSpace.Database.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace AlinSpace.Database.Ef
 {

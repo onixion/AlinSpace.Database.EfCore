@@ -2,18 +2,19 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace AlinSpace.Database.Models
+namespace AlinSpace.Database
 {
     /// <summary>
     /// Represents the abstract entity.
     /// </summary>
-    public abstract class AbstractEntity : IEntity
+    /// <typeparam name="TPrimaryKey">Type of primary key.</typeparam>
+    public abstract class AbstractEntity<TPrimaryKey> : IEntity<TPrimaryKey>
     {
         /// <summary>
         /// Gets or sets the ID of the entity.
         /// </summary>
         [Key]
-        public long Id { get; set; }
+        public TPrimaryKey Id { get; set; }
 
         /// <summary>
         /// Gets or sets the name.
@@ -26,7 +27,6 @@ namespace AlinSpace.Database.Models
         /// <remarks>
         /// In UTC.
         /// </remarks>
-        [Required]
         public DateTime CreationTimestamp { get; set; }
 
         /// <summary>
@@ -35,7 +35,6 @@ namespace AlinSpace.Database.Models
         /// <remarks>
         /// In UTC.
         /// </remarks>
-        [Required]
         public DateTime ModificationTimestamp { get; set; }
 
         /// <summary>

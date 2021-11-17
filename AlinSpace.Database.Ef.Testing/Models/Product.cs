@@ -1,8 +1,6 @@
-﻿using AlinSpace.Database.Models;
-
-namespace AlinSpace.Database.Ef.Testing.Models
+﻿namespace AlinSpace.Database.Ef.Testing.Models
 {
-    public class Product : AbstractTenantEntity
+    public class Product : AbstractTenantEntity<long>
     {
         public string Description { get; set; }
 

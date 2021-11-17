@@ -2,18 +2,19 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace AlinSpace.Database.Models
+namespace AlinSpace.Database
 {
     /// <summary>
     /// Represents the entity interface.
     /// </summary>
-    public interface IEntity
+    /// <typeparam name="TPrimaryKey">Type of primary key.</typeparam>
+    public interface IEntity<TPrimaryKey>
     {
         /// <summary>
         /// Gets or sets the ID of the entity.
         /// </summary>
         [Key]
-        long Id { get; set; }
+        TPrimaryKey Id { get; set; }
 
         /// <summary>
         /// Gets or sets the name.

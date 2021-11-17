@@ -1,11 +1,10 @@
-﻿using AlinSpace.Database.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 
 namespace AlinSpace.Database.Ef.Testing.Models
 {
-    public class Person : AbstractTenantEntity
+    public class Person : AbstractTenantEntity<long>
     {
         public string FirstName { get; set; }
 
