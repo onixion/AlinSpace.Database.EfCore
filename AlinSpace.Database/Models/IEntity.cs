@@ -17,11 +17,6 @@ namespace AlinSpace.Database
         TPrimaryKey Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the name.
-        /// </summary>
-        string Name { get; set; }
-
-        /// <summary>
         /// Gets or sets the creation timestamp.
         /// </summary>
         /// <remarks>

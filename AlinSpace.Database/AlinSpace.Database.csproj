@@ -2,7 +2,7 @@
 
   <PropertyGroup>
 	<TargetFrameworks>netstandard2.0;netstandard2.1;net5.0</TargetFrameworks>
-    <Version>5.5.1</Version>
+    <Version>5.5.3</Version>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Copyright>Copyright © 2021 Alin Andersen</Copyright>
@@ -11,9 +11,11 @@
     <RepositoryUrl>https://github.com/onixion/AlinSpace.Database</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageProjectUrl>https://github.com/onixion/AlinSpace.Database.git</PackageProjectUrl>
-    <AssemblyVersion>5.5.1</AssemblyVersion>
-    <FileVersion>5.5.1</FileVersion>
+    <AssemblyVersion>5.5.3</AssemblyVersion>
+    <FileVersion>5.5.3</FileVersion>
     <Description>Database abstraction layer.</Description>
+    <PackageIcon>Icon.png</PackageIcon>
+    <PackageIconUrl />
   </PropertyGroup>
   <ItemGroup>
 	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.10" Condition="'$(TargetFramework)' == 'net5.0'" />
@@ -34,6 +36,10 @@
     <None Update="Assets\Icon.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
+    </None>
+    <None Include="Assets\Icon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
     </None>
   </ItemGroup>
 </Project>
