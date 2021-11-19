@@ -9,7 +9,7 @@
         /// <summary>
         /// Gets or sets the tenant ID.
         /// </summary>
-        long TenantId { get; set; }
+        long? TenantId { get; set; }
 
         /// <summary>
         /// Gets or sets the tenant.

@@ -7,7 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlinSpace.Database", "AlinS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlinSpace.Database.Ef", "AlinSpace.Database.Ef\AlinSpace.Database.Ef.csproj", "{527CF036-1CA4-459B-ABCD-BF3126681648}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlinSpace.Database.Ef.Testing", "AlinSpace.Database.Ef.Testing\AlinSpace.Database.Ef.Testing.csproj", "{CBAF9164-631F-41FF-87C1-4EAFEA857A56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlinSpace.Database.Ef.Testing", "AlinSpace.Database.Ef.Testing\AlinSpace.Database.Ef.Testing.csproj", "{CBAF9164-631F-41FF-87C1-4EAFEA857A56}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C8DC8DAC-5253-4957-A1A9-63A2A66C977D}"
+	ProjectSection(SolutionItems) = preProject
+		Todo.txt = Todo.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

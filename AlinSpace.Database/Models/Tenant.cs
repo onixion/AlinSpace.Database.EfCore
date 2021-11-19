@@ -3,7 +3,11 @@
     /// <summary>
     /// Represents the tenant model.
     /// </summary>
-    public sealed class Tenant : AbstractEntity<long>
+    public class Tenant : AbstractEntity<long>
     {
+        /// <summary>
+        /// Gets or sets the name.
+        /// </summary>
+        public string Name { get; set; }
     }
 }

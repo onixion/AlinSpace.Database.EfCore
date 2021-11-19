@@ -12,7 +12,7 @@ namespace AlinSpace.Database
         /// <summary>
         /// Gets or sets the tenant ID.
         /// </summary>
-        public long TenantId { get; set; }
+        public long? TenantId { get; set; }
 
         /// <summary>
         /// Gets or sets the tenant.
@@ -23,15 +23,23 @@ namespace AlinSpace.Database
         /// On model creating.
         /// </summary>
         /// <param name="modelBuilder">Model builder.</param>
-        /// <param name="entityType">Entity type.</param>
-        public override void OnModelCreating(ModelBuilder modelBuilder, Type entityType)
+        /// <param name="entityType">Type of entity.</param>
+        /// <param name="entityName">Optional name of entity.</param>
+        /// <remarks>
+        /// If <paramref name="entityName"/> is not set, the name of the type will be taken.
+        /// </remarks>
+        public override void OnModelCreating(ModelBuilder modelBuilder, Type entityType, string entityName = null)
         {
             base.OnModelCreating(modelBuilder, entityType);
 
-            modelBuilder.Entity<AbstractTenantEntity<TPrimaryKey>>()
-                .HasOne(x => x.Tenant)
+            // Table-per-type inheritance handling.
+            modelBuilder.Entity(entityType)
+                .ToTable(entityName ?? entityType.Name);
+
+            modelBuilder.Entity(entityType)
+                .HasOne(nameof(Tenant))
                 .WithMany()
-                .HasForeignKey(x => x.TenantId)
+                .HasForeignKey(nameof(TenantId))
                 .IsRequired(false)
                 .OnDelete(DeleteBehavior.NoAction);
         }

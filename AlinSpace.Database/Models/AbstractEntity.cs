@@ -22,7 +22,7 @@ namespace AlinSpace.Database
         /// <remarks>
         /// In UTC.
         /// </remarks>
-        public DateTime CreationTimestamp { get; set; }
+        public DateTime? CreationTimestamp { get; set; }
 
         /// <summary>
         /// Gets or sets the modification timestamp.
@@ -30,7 +30,7 @@ namespace AlinSpace.Database
         /// <remarks>
         /// In UTC.
         /// </remarks>
-        public DateTime ModificationTimestamp { get; set; }
+        public DateTime? ModificationTimestamp { get; set; }
 
         /// <summary>
         /// Gets or sets meta data.
@@ -41,8 +41,12 @@ namespace AlinSpace.Database
         /// On model creating.
         /// </summary>
         /// <param name="modelBuilder">Model builder.</param>
-        /// <param name="entityType">Model builder.</param>
-        public virtual void OnModelCreating(ModelBuilder modelBuilder, Type entityType)
+        /// <param name="entityType">Type of entity.</param>
+        /// <param name="entityName">Optional name of entity.</param>
+        /// <remarks>
+        /// If <paramref name="entityName"/> is not set, the name of the type will be taken.
+        /// </remarks>
+        public virtual void OnModelCreating(ModelBuilder modelBuilder, Type entityType, string entityName = null)
         {
         }
     }
