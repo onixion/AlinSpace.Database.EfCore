@@ -16,7 +16,7 @@ namespace AlinSpace.Database
         /// <typeparam name="TPrimaryKey">Type of primary key.</typeparam>
         /// <param name="queryable">Queryable.</param>
         /// <param name="tenantId">Tenant ID.</param>
-        /// <returns>Queryable scopped to given tenant.</returns>
+        /// <returns>Queryable scope to given tenant.</returns>
         public static IQueryable<TTenantEntity> ScopeTenant<TTenantEntity, TPrimaryKey>(
             this IQueryable<TTenantEntity> queryable,
             long tenantId) where TTenantEntity : ITenantEntity<TPrimaryKey>
