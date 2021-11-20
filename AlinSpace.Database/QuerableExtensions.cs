@@ -25,6 +25,19 @@ namespace AlinSpace.Database
         }
 
         /// <summary>
+        /// Where entities are not deleted.
+        /// </summary>
+        /// <typeparam name="TEntity">Type of entity.</typeparam>
+        /// <typeparam name="TPrimaryKey">Type of primary key.</typeparam>
+        /// <param name="queryable">Queryable.</param>
+        /// <returns>Queryable with not deleted entities.</returns>
+        public static IQueryable<TEntity> WhereNotDeleted<TEntity, TPrimaryKey>(
+            this IQueryable<TEntity> queryable) where TEntity : IEntity<TPrimaryKey>
+        {
+            return queryable.Where(x => !x.IsDeleted);
+        }
+
+        /// <summary>
         /// Get a specific page.
         /// </summary>
         /// <typeparam name="TEntity">Type of the entity.</typeparam>
@@ -47,9 +60,7 @@ namespace AlinSpace.Database
                 pageSize = 1;
 
             if (predicate != null)
-            {
                 queryable = queryable.Where(predicate);
-            }
 
             return queryable
                 .Skip((page - 1) * pageSize)

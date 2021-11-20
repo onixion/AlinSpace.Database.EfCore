@@ -1,8 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-	<TargetFrameworks>netstandard2.1;net5.0</TargetFrameworks>
-    <Version>6.0.0</Version>
+	<TargetFrameworks>netstandard2.1;net5.0;net6.0</TargetFrameworks>
+    <Version>6.0.3</Version>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Copyright>Copyright © 2021 Alin Andersen</Copyright>
@@ -11,31 +10,19 @@
     <RepositoryUrl>https://github.com/onixion/AlinSpace.Database</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageProjectUrl>https://github.com/onixion/AlinSpace.Database.git</PackageProjectUrl>
-    <AssemblyVersion>6.0.0</AssemblyVersion>
-    <FileVersion>6.0.0</FileVersion>
+    <AssemblyVersion>6.0.3</AssemblyVersion>
+    <FileVersion>6.0.3</FileVersion>
     <Description>Database abstraction layer.</Description>
     <PackageIcon>Icon.png</PackageIcon>
     <PackageIconUrl />
   </PropertyGroup>
   <ItemGroup>
+	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0" Condition="'$(TargetFramework)' == 'net6.0'" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.0" Condition="'$(TargetFramework)' == 'net6.0'" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.10" Condition="'$(TargetFramework)' == 'net5.0'" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.10" Condition="'$(TargetFramework)' == 'net5.0'" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.10" Condition="'$(TargetFramework)' == 'netstandard2.1'" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions">
-      <Version>5.0.10</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational">
-      <Version>5.0.10</Version>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions">
-      <Version>5.0.10</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational">
-      <Version>5.0.10</Version>
-    </PackageReference>
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.10" Condition="'$(TargetFramework)' == 'netstandard2.1'" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Icon.png">

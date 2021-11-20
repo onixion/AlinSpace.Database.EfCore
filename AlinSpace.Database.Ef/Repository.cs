@@ -28,10 +28,20 @@ namespace AlinSpace.Database.Ef
         /// <summary>
         /// Returns a new query.
         /// </summary>
+        /// <param name="options">Optional query options.</param>
         /// <returns>New query.</returns>
-        public IQueryable<TEntity> NewQuery()
+        public IQueryable<TEntity> NewQuery(QueryOptions options = null)
         {
-            return dbSet.AsQueryable();
+            options ??= new QueryOptions();
+
+            if (options.Tracking)
+            {
+                return dbSet.AsTracking();
+            }
+            else
+            {
+                return dbSet.AsQueryable();
+            }
         }
 
         /// <summary>

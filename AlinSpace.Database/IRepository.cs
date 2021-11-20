@@ -12,8 +12,9 @@ namespace AlinSpace.Database
         /// <summary>
         /// Returns a new query.
         /// </summary>
+        /// <param name="options">Optional query options.</param>
         /// <returns>New query.</returns>
-        IQueryable<TEntity> NewQuery();
+        IQueryable<TEntity> NewQuery(QueryOptions options = null);
 
         /// <summary>
         /// Adds entity.

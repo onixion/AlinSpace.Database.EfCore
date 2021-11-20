@@ -38,6 +38,11 @@ namespace AlinSpace.Database
         string MetaData { get; set; }
 
         /// <summary>
+        /// Gets or sets the delete flag.
+        /// </summary>
+        bool IsDeleted { get; set; }
+
+        /// <summary>
         /// On model creating.
         /// </summary>
         /// <param name="modelBuilder">Model builder.</param>
