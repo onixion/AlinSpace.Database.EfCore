@@ -4,22 +4,22 @@
 	<TargetFrameworks>netstandard2.1;net5.0</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>6.0.3</Version>
+    <Version>6.0.7</Version>
     <Copyright>Copyright © 2021 Alin Andersen</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/onixion/AlinSpace.Database.git</PackageProjectUrl>
     <RepositoryUrl>https://github.com/onixion/AlinSpace.Database</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>alinspace database entityframework ef alin space</PackageTags>
-    <AssemblyVersion>6.0.3</AssemblyVersion>
+    <AssemblyVersion>6.0.7</AssemblyVersion>
 	<Description>Database abstraction layer implementation for EntityFrameworkCore.</Description>
-	<FileVersion>6.0.3</FileVersion>
+	<FileVersion>6.0.7</FileVersion>
 	<PackageIcon>Icon.png</PackageIcon>
 	<PackageIconUrl />
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AlinSpace.Database" Version="6.0.3" />
+    <PackageReference Include="AlinSpace.Database" Version="6.0.8" />
   </ItemGroup>
 
   <ItemGroup>
