@@ -1,8 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
 	<TargetFrameworks>netstandard2.1;net5.0;net6.0</TargetFrameworks>
-    <Version>6.0.8</Version>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Version>6.0.11</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Copyright>Copyright © 2021 Alin Andersen</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -10,8 +9,6 @@
     <RepositoryUrl>https://github.com/onixion/AlinSpace.Database</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageProjectUrl>https://github.com/onixion/AlinSpace.Database.git</PackageProjectUrl>
-    <AssemblyVersion>6.0.8</AssemblyVersion>
-    <FileVersion>6.0.8</FileVersion>
     <Description>Database abstraction layer.</Description>
     <PackageIcon>Icon.png</PackageIcon>
     <PackageIconUrl />

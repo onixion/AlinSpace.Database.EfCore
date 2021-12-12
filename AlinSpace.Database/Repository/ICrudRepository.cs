@@ -59,21 +59,21 @@ namespace AlinSpace.Database
         /// </summary>
         /// <param name="entity">Entity to be deleted.</param>
         /// <param name="commit">Commit.</param>
-        /// <param name="soft">Perform soft delete.</param>
+        /// <param name="hard">Perform hard delete.</param>
         Task DeleteAsync(
             TEntity entity,
             bool commit = false,
-            bool soft = false);
+            bool hard = false);
 
         /// <summary>
         /// Delete entity by given primary key.
         /// </summary>
         /// <param name="primaryKey">Primary key of entity to delete.</param>
         /// <param name="commit">Commit.</param>
-        /// <param name="soft">Perform soft delete.</param>
+        /// <param name="hard">Perform hard delete.</param>
         Task DeleteAsync(
             TPrimaryKey primaryKey,
             bool commit = false,
-            bool soft = false);
+            bool hard = false);
     }
 }

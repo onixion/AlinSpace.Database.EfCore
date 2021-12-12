@@ -106,16 +106,16 @@ namespace AlinSpace.Database.Ef
         public async Task DeleteAsync(
             TEntity entity,
             bool commit = false,
-            bool soft = false)
+            bool hard = false)
         {
-            if (soft)
+            if (hard)
             {
-                entity.IsDeleted = true;
-                await UpdateAsync(entity, commit: false);
+                repository.Delete(entity);
             }
             else
             {
-                repository.Delete(entity);
+                entity.IsDeleted = true;
+                await UpdateAsync(entity, commit: false);
             }
 
             if (commit)
@@ -127,18 +127,17 @@ namespace AlinSpace.Database.Ef
         public async Task DeleteAsync(
             TPrimaryKey primaryKey,
             bool commit = false,
-            bool soft = false)
+            bool hard = false)
         {
             var entity = await repository
                 .NewQuery(QueryOptions.WithTracking)
                 .Where(x => x.Id.Equals(primaryKey))
-                .Where(x => !x.IsDeleted)
                 .FirstOrDefaultAsync();
 
             if (entity == null)
                 return;
 
-            await DeleteAsync(entity, commit, soft);
+            await DeleteAsync(entity, commit, hard);
         }
     }
 }
