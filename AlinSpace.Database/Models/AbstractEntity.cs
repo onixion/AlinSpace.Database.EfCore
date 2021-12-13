@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace AlinSpace.Database
@@ -40,6 +41,7 @@ namespace AlinSpace.Database
         /// <summary>
         /// Gets or sets the delete flag.
         /// </summary>
+        [DefaultValue(false)]
         public bool? IsDeleted { get; set; }
 
         /// <summary>
