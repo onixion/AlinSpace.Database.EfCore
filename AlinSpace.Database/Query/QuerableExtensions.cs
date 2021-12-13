@@ -34,7 +34,7 @@ namespace AlinSpace.Database
         public static IQueryable<TEntity> WhereNotDeleted<TEntity, TPrimaryKey>(
             this IQueryable<TEntity> queryable) where TEntity : IEntity<TPrimaryKey>
         {
-            return queryable.Where(x => !x.IsDeleted);
+            return queryable.Where(x => x.IsDeleted.GetValueOrDefault() == false);
         }
 
         /// <summary>

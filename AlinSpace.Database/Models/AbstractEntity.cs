@@ -22,7 +22,7 @@ namespace AlinSpace.Database
         /// <remarks>
         /// In UTC.
         /// </remarks>
-        public DateTime? CreationTimestamp { get; set; }
+        public DateTimeOffset? CreationTimestamp { get; set; }
 
         /// <summary>
         /// Gets or sets the modification timestamp.
@@ -30,7 +30,7 @@ namespace AlinSpace.Database
         /// <remarks>
         /// In UTC.
         /// </remarks>
-        public DateTime? ModificationTimestamp { get; set; }
+        public DateTimeOffset? ModificationTimestamp { get; set; }
 
         /// <summary>
         /// Gets or sets meta data.
@@ -40,7 +40,7 @@ namespace AlinSpace.Database
         /// <summary>
         /// Gets or sets the delete flag.
         /// </summary>
-        public bool IsDeleted { get; set; }
+        public bool? IsDeleted { get; set; }
 
         /// <summary>
         /// On model creating.
