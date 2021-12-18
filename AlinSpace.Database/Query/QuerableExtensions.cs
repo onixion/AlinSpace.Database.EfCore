@@ -31,10 +31,10 @@ namespace AlinSpace.Database
         /// <typeparam name="TPrimaryKey">Type of primary key.</typeparam>
         /// <param name="queryable">Queryable.</param>
         /// <returns>Queryable with not deleted entities.</returns>
-        public static IQueryable<TEntity> WhereNotDeleted<TEntity, TPrimaryKey>(
+        public static IQueryable<TEntity> WhereNotSoftDeleted<TEntity, TPrimaryKey>(
             this IQueryable<TEntity> queryable) where TEntity : IEntity<TPrimaryKey>
         {
-            return queryable.Where(x => x.IsDeleted.GetValueOrDefault() == false);
+            return queryable.Where(x => x.IsDeleted == false);
         }
 
         /// <summary>

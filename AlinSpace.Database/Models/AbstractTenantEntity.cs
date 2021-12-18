@@ -15,11 +15,6 @@ namespace AlinSpace.Database
         public long? TenantId { get; set; }
 
         /// <summary>
-        /// Gets or sets the tenant.
-        /// </summary>
-        public Tenant Tenant { get; set; }
-
-        /// <summary>
         /// On model creating.
         /// </summary>
         /// <param name="modelBuilder">Model builder.</param>
@@ -35,13 +30,6 @@ namespace AlinSpace.Database
             // Table-per-type inheritance handling.
             modelBuilder.Entity(entityType)
                 .ToTable(entityName ?? entityType.Name);
-
-            modelBuilder.Entity(entityType)
-                .HasOne(nameof(Tenant))
-                .WithMany()
-                .HasForeignKey(nameof(TenantId))
-                .IsRequired(false)
-                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

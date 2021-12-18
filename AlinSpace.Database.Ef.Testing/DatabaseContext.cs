@@ -5,11 +5,9 @@ namespace AlinSpace.Database.Ef.Testing
 {
     public class DatabaseContext : AbstractTenantDbContext
     {
-        public DbSet<Order> Order { get; set; }
+        public DbSet<Book> Book { get; set; }
 
-        public DbSet<Person> Person { get; set; }
-
-        public DbSet<Product> Product { get; set; }
+        public DbSet<Page> Page { get; set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
@@ -20,9 +18,8 @@ namespace AlinSpace.Database.Ef.Testing
         {
             base.OnModelCreating(modelBuilder);
 
-            new Order().OnModelCreating(modelBuilder, typeof(Order));
-            new Person().OnModelCreating(modelBuilder, typeof(Person));
-            new Product().OnModelCreating(modelBuilder, typeof(Product));
+            new Book().OnModelCreating(modelBuilder, typeof(Book));
+            new Page().OnModelCreating(modelBuilder, typeof(Page));
         }
     }
 }

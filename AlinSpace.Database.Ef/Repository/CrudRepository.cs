@@ -30,9 +30,6 @@ namespace AlinSpace.Database.Ef
         {
             var repository = transaction.GetRepository<TEntity>();
 
-            // Todo include again when Postgres fixes their issue
-            //entity.CreationTimestamp = DateTime.UtcNow;
-
             await repository.AddAsync(entity);
             await transaction.CommitAsync();
 
@@ -74,8 +71,6 @@ namespace AlinSpace.Database.Ef
             bool commit = false)
         {
             var repository = transaction.GetRepository<TEntity>();
-
-            entity.ModificationTimestamp = DateTime.UtcNow;
 
             repository.Update(entity);
 
@@ -126,13 +121,18 @@ namespace AlinSpace.Database.Ef
 
         public async Task DeleteAsync(
             TPrimaryKey primaryKey,
+            Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null,
             bool commit = false,
             bool hard = false)
         {
-            var entity = await repository
+            var query = repository
                 .NewQuery(QueryOptions.WithTracking)
-                .Where(x => x.Id.Equals(primaryKey))
-                .FirstOrDefaultAsync();
+                .Where(x => x.Id.Equals(primaryKey));
+
+            if (include != null)
+                query = include(query);
+
+            var entity = await query.FirstOrDefaultAsync();
 
             if (entity == null)
                 return;

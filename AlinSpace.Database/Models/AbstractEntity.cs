@@ -42,7 +42,7 @@ namespace AlinSpace.Database
         /// Gets or sets the delete flag.
         /// </summary>
         [DefaultValue(false)]
-        public bool? IsDeleted { get; set; }
+        public bool IsDeleted { get; set; }
 
         /// <summary>
         /// On model creating.

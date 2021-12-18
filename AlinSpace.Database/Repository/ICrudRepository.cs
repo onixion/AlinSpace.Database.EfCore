@@ -69,10 +69,12 @@ namespace AlinSpace.Database
         /// Delete entity by given primary key.
         /// </summary>
         /// <param name="primaryKey">Primary key of entity to delete.</param>
+        /// <param name="include">Include.</param>
         /// <param name="commit">Commit.</param>
         /// <param name="hard">Perform hard delete.</param>
         Task DeleteAsync(
             TPrimaryKey primaryKey,
+            Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null,
             bool commit = false,
             bool hard = false);
     }
