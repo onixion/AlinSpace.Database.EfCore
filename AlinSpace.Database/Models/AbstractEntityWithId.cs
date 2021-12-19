@@ -6,12 +6,10 @@ using System.ComponentModel.DataAnnotations;
 namespace AlinSpace.Database
 {
     /// <summary>
-    /// Represent the abstract default implementation of the entity.
+    /// Represents the abstract entity with ID.
     /// </summary>
-    public abstract class AbstractEntity<TPrimaryKey, TTenantPrimaryKey> 
-        : IEntityWithId<TPrimaryKey>, IEntityWithTenant<TTenantPrimaryKey>
-        where TPrimaryKey : struct
-        where TTenantPrimaryKey : struct
+    /// <typeparam name="TPrimaryKey">Type of primary key.</typeparam>
+    public abstract class AbstractEntityWithId<TPrimaryKey> : IEntityWithId<TPrimaryKey> where TPrimaryKey : struct
     {
         #region IEntity
 
@@ -54,15 +52,6 @@ namespace AlinSpace.Database
 
         #endregion
 
-        #region IEntityWithTenant
-
-        /// <summary>
-        /// Gets or sets the tenant ID.
-        /// </summary>
-        public TTenantPrimaryKey TenantId { get; set; }
-
-        #endregion
-
         /// <summary>
         /// On model creating.
         /// </summary>
@@ -74,9 +63,6 @@ namespace AlinSpace.Database
         /// </remarks>
         public virtual void OnModelCreating(ModelBuilder modelBuilder, Type entityType, string entityName = null)
         {
-            // Table-per-type inheritance handling.
-            modelBuilder.Entity(entityType)
-                .ToTable(entityName ?? entityType.Name);
         }
     }
 }

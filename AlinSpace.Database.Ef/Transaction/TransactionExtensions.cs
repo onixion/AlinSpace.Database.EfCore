@@ -8,16 +8,16 @@
         /// <summary>
         /// Gets CRUD repository.
         /// </summary>
-        /// <typeparam name="TEntity">Type of entity.</typeparam>
+        /// <typeparam name="TEntityWithId">Type of the entity with ID.</typeparam>
         /// <typeparam name="TPrimaryKey">Type of primary key.</typeparam>
         /// <param name="transaction">Transaction.</param>
         /// <returns>CRUD repository.</returns>
-        public static ICrudRepository<TEntity, TPrimaryKey> GetCrudRepository<TEntity, TPrimaryKey>(
+        public static ICrudRepository<TEntityWithId, TPrimaryKey> GetCrudRepository<TEntityWithId, TPrimaryKey>(
             this ITransaction transaction)
-            where TEntity : class, IEntity<TPrimaryKey>
+            where TEntityWithId : class, IEntityWithId<TPrimaryKey>
             where TPrimaryKey : struct
         {
-            return new CrudRepository<TEntity, TPrimaryKey>(transaction);
+            return new CrudRepository<TEntityWithId, TPrimaryKey>(transaction);
         }
     }
 }

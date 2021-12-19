@@ -13,28 +13,41 @@ namespace AlinSpace.Database
         /// Scope querable for tenant.
         /// </summary>
         /// <typeparam name="TTenantEntity">Type of tenant entity.</typeparam>
-        /// <typeparam name="TPrimaryKey">Type of primary key.</typeparam>
+        /// <typeparam name="ITenantPrimaryKey">Type of tenant primary key.</typeparam>
         /// <param name="queryable">Queryable.</param>
         /// <param name="tenantId">Tenant ID.</param>
         /// <returns>Queryable scope to given tenant.</returns>
-        public static IQueryable<TTenantEntity> ScopeTenant<TTenantEntity, TPrimaryKey>(
+        public static IQueryable<TTenantEntity> ScopeTenant<TTenantEntity, ITenantPrimaryKey>(
             this IQueryable<TTenantEntity> queryable,
-            long tenantId) where TTenantEntity : ITenantEntity<TPrimaryKey>
+            ITenantPrimaryKey tenantId) 
+            where TTenantEntity : IEntityWithTenant<ITenantPrimaryKey>
+            where ITenantPrimaryKey : struct
         {
-            return queryable.Where(x => x.TenantId == tenantId);
+            return queryable.Where(x => x.TenantId.Equals(tenantId));
         }
 
         /// <summary>
         /// Where entities are not deleted.
         /// </summary>
         /// <typeparam name="TEntity">Type of entity.</typeparam>
-        /// <typeparam name="TPrimaryKey">Type of primary key.</typeparam>
         /// <param name="queryable">Queryable.</param>
-        /// <returns>Queryable with not deleted entities.</returns>
-        public static IQueryable<TEntity> WhereNotSoftDeleted<TEntity, TPrimaryKey>(
-            this IQueryable<TEntity> queryable) where TEntity : IEntity<TPrimaryKey>
+        /// <returns>Queryable with not soft deleted entities.</returns>
+        public static IQueryable<TEntity> WhereNotSoftDeleted<TEntity>(
+            this IQueryable<TEntity> queryable) where TEntity : IEntity
         {
             return queryable.Where(x => x.IsDeleted == false);
+        }
+
+        /// <summary>
+        /// Where entities are deleted.
+        /// </summary>
+        /// <typeparam name="TEntity">Type of entity.</typeparam>
+        /// <param name="queryable">Queryable.</param>
+        /// <returns>Queryable with soft deleted entities.</returns>
+        public static IQueryable<TEntity> WhereSoftDeleted<TEntity>(
+            this IQueryable<TEntity> queryable) where TEntity : IEntity
+        {
+            return queryable.Where(x => x.IsDeleted == true);
         }
 
         /// <summary>

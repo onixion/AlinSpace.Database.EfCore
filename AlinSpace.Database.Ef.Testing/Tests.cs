@@ -1,9 +1,5 @@
-﻿using AlinSpace.Database.Models;
-using Bogus;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Xunit;
 
 namespace AlinSpace.Database.Ef.Testing

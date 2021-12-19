@@ -9,8 +9,8 @@ namespace AlinSpace.Database
     /// </summary>
     /// <typeparam name="TEntity">Type of the entity.</typeparam>
     /// <typeparam name="TPrimaryKey">Type of the primary key.</typeparam>
-    public interface ICrudRepository<TEntity, TPrimaryKey>
-        where TEntity : class, IEntity<TPrimaryKey>
+    public interface ICrudRepository<TEntityWithId, TPrimaryKey>
+        where TEntityWithId : class, IEntityWithId<TPrimaryKey>
         where TPrimaryKey : struct
     {
         /// <summary>
@@ -18,18 +18,18 @@ namespace AlinSpace.Database
         /// </summary>
         /// <param name="entity">Entity to be added.</param>
         /// <returns>Primary key of the added entity.</returns>
-        Task<TPrimaryKey> AddAsync(TEntity entity);
+        Task<TPrimaryKey> AddAsync(TEntityWithId entity);
 
         /// <summary>
         /// Gets the entity.
         /// </summary>
         /// <param name="primaryKey">Primary key.</param>
-        /// <param name="includeConfigurator">Optional include configurator.</param>
+        /// <param name="queryableFunc">Optional queryable func.</param>
         /// <param name="options">Optional query options.</param>
         /// <returns>Entity.</returns>
-        Task<TEntity> GetAsync(
+        Task<TEntityWithId> GetAsync(
             TPrimaryKey primaryKey,
-            Func<IQueryable<TEntity>, IQueryable<TEntity>> includeConfigurator = null,
+            Func<IQueryable<TEntityWithId>, IQueryable<TEntityWithId>> queryableFunc = null,
             QueryOptions options = null);
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace AlinSpace.Database
         /// <param name="entity">Entity to be updated.</param>
         /// <param name="commit">Commit changes.</param>
         Task UpdateAsync(
-            TEntity entity,
+            TEntityWithId entity,
             bool commit = false);
 
         /// <summary>
@@ -46,12 +46,12 @@ namespace AlinSpace.Database
         /// </summary>
         /// <param name="primaryKey">Primary key of the entity to updated.</param>
         /// <param name="updateAction">Update action.</param>
-        /// <param name="includeConigurator">Optional include conigurator.</param>
+        /// <param name="queryableFunc">Optional queryable func.</param>
         /// <param name="commit">Commit changes.</param>
         Task UpdateAsync(
             TPrimaryKey primaryKey,
-            Action<TEntity> updateAction,
-            Func<IQueryable<TEntity>, IQueryable<TEntity>> includeConigurator = null,
+            Action<TEntityWithId> updateAction,
+            Func<IQueryable<TEntityWithId>, IQueryable<TEntityWithId>> queryableFunc = null,
             bool commit = false);
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace AlinSpace.Database
         /// <param name="commit">Commit.</param>
         /// <param name="hard">Perform hard delete.</param>
         Task DeleteAsync(
-            TEntity entity,
+            TEntityWithId entity,
             bool commit = false,
             bool hard = false);
 
@@ -69,12 +69,12 @@ namespace AlinSpace.Database
         /// Delete entity by given primary key.
         /// </summary>
         /// <param name="primaryKey">Primary key of entity to delete.</param>
-        /// <param name="include">Include.</param>
+        /// <param name="queryableFunc">Optional queryable func.</param>
         /// <param name="commit">Commit.</param>
         /// <param name="hard">Perform hard delete.</param>
         Task DeleteAsync(
             TPrimaryKey primaryKey,
-            Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null,
+            Func<IQueryable<TEntityWithId>, IQueryable<TEntityWithId>> queryableFunc = null,
             bool commit = false,
             bool hard = false);
     }

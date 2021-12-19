@@ -1,21 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace AlinSpace.Database
 {
     /// <summary>
     /// Represents the entity interface.
     /// </summary>
-    /// <typeparam name="TPrimaryKey">Type of primary key.</typeparam>
-    public interface IEntity<TPrimaryKey>
+    public interface IEntity
     {
-        /// <summary>
-        /// Gets or sets the ID of the entity.
-        /// </summary>
-        [Key]
-        TPrimaryKey Id { get; set; }
-
         /// <summary>
         /// Gets or sets the creation timestamp.
         /// </summary>

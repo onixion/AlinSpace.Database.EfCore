@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 namespace AlinSpace.Database.Ef
 {
     /// <summary>
-    /// Default implementation for <see cref="ICrudRepository{TEntity, TPrimaryKey}"/>.
+    /// Represents the default implementation for <see cref="ICrudRepository{TEntity, TPrimaryKey}"/>.
     /// </summary>
-    /// <typeparam name="TEntity">Type of entity.</typeparam>
-    /// <typeparam name="TPrimaryKey">Type of primary key.</typeparam>
-    public class CrudRepository<TEntity, TPrimaryKey> : ICrudRepository<TEntity, TPrimaryKey>
-        where TEntity : class, IEntity<TPrimaryKey>
+    /// <typeparam name="TEntityWithId">Type of the entity with ID.</typeparam>
+    /// <typeparam name="TPrimaryKey">Type of the primary key.</typeparam>
+    public class CrudRepository<TEntityWithId, TPrimaryKey> : ICrudRepository<TEntityWithId, TPrimaryKey>
+        where TEntityWithId : class, IEntityWithId<TPrimaryKey>
         where TPrimaryKey : struct
     {
         private readonly ITransaction transaction;
-        private readonly IRepository<TEntity> repository;
+        private readonly IRepository<TEntityWithId> repository;
 
         /// <summary>
         /// Constructor.
@@ -23,12 +23,12 @@ namespace AlinSpace.Database.Ef
         public CrudRepository(ITransaction transaction)
         {
             this.transaction = transaction;
-            repository = transaction.GetRepository<TEntity>();
+            repository = transaction.GetRepository<TEntityWithId>();
         }
 
-        public async Task<TPrimaryKey> AddAsync(TEntity entity)
+        public async Task<TPrimaryKey> AddAsync(TEntityWithId entity)
         {
-            var repository = transaction.GetRepository<TEntity>();
+            var repository = transaction.GetRepository<TEntityWithId>();
 
             await repository.AddAsync(entity);
             await transaction.CommitAsync();
@@ -36,29 +36,29 @@ namespace AlinSpace.Database.Ef
             return entity.Id;
         }
 
-        public async Task<TEntity> GetOrDefaultAsync(
+        public async Task<TEntityWithId> GetOrDefaultAsync(
             TPrimaryKey primaryKey,
-            Func<IQueryable<TEntity>, IQueryable<TEntity>> includeConfigurator = null,
+            Func<IQueryable<TEntityWithId>, IQueryable<TEntityWithId>> queryableFunc = null,
             QueryOptions options = null)
         {
-            var repository = transaction.GetRepository<TEntity>();
+            var repository = transaction.GetRepository<TEntityWithId>();
 
             var query = repository
                 .NewQuery(options)
                 .Where(x => x.Id.Equals(primaryKey));
 
-            query = includeConfigurator?.Invoke(query) ?? query;
+            query = queryableFunc?.Invoke(query) ?? query;
 
             return await query.FirstOrDefaultAsync();
         }
 
         // todo maybe make this an extension?
-        public async Task<TEntity> GetAsync(
+        public async Task<TEntityWithId> GetAsync(
             TPrimaryKey primaryKey,
-            Func<IQueryable<TEntity>, IQueryable<TEntity>> includeConigurator = null,
+            Func<IQueryable<TEntityWithId>, IQueryable<TEntityWithId>> queryableFunc = null,
             QueryOptions options = null)
         {
-            var entity = await GetOrDefaultAsync(primaryKey, includeConigurator, options);
+            var entity = await GetOrDefaultAsync(primaryKey, queryableFunc, options);
 
             if (entity == null)
                 throw new EntityNotFoundException(primaryKey);
@@ -67,10 +67,10 @@ namespace AlinSpace.Database.Ef
         }
 
         public async Task UpdateAsync(
-            TEntity entity,
+            TEntityWithId entity,
             bool commit = false)
         {
-            var repository = transaction.GetRepository<TEntity>();
+            var repository = transaction.GetRepository<TEntityWithId>();
 
             repository.Update(entity);
 
@@ -82,15 +82,15 @@ namespace AlinSpace.Database.Ef
 
         public async Task UpdateAsync(
             TPrimaryKey primaryKey,
-            Action<TEntity> updateAction,
-            Func<IQueryable<TEntity>, IQueryable<TEntity>> includeConigurator = null,
+            Action<TEntityWithId> updateAction,
+            Func<IQueryable<TEntityWithId>, IQueryable<TEntityWithId>> queryableFunc = null,
             bool commit = false)
         {
-            var repository = transaction.GetRepository<TEntity>();
+            var repository = transaction.GetRepository<TEntityWithId>();
 
             var entity = await GetAsync(
                 primaryKey,
-                includeConigurator: includeConigurator,
+                queryableFunc: queryableFunc,
                 options: QueryOptions.WithTracking);
 
             updateAction(entity);
@@ -99,7 +99,7 @@ namespace AlinSpace.Database.Ef
         }
 
         public async Task DeleteAsync(
-            TEntity entity,
+            TEntityWithId entity,
             bool commit = false,
             bool hard = false)
         {
@@ -121,7 +121,7 @@ namespace AlinSpace.Database.Ef
 
         public async Task DeleteAsync(
             TPrimaryKey primaryKey,
-            Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null,
+            Func<IQueryable<TEntityWithId>, IQueryable<TEntityWithId>> queryableFunc = null,
             bool commit = false,
             bool hard = false)
         {
@@ -129,8 +129,7 @@ namespace AlinSpace.Database.Ef
                 .NewQuery(QueryOptions.WithTracking)
                 .Where(x => x.Id.Equals(primaryKey));
 
-            if (include != null)
-                query = include(query);
+            query = queryableFunc?.Invoke(query) ?? query;
 
             var entity = await query.FirstOrDefaultAsync();
 

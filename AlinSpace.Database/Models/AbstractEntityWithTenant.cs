@@ -1,17 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 
 namespace AlinSpace.Database
 {
     /// <summary>
-    /// Represent the abstract default implementation of the entity.
+    /// Represents the abstract entity with tenant implementation.
     /// </summary>
-    public abstract class AbstractEntity<TPrimaryKey, TTenantPrimaryKey> 
-        : IEntityWithId<TPrimaryKey>, IEntityWithTenant<TTenantPrimaryKey>
-        where TPrimaryKey : struct
-        where TTenantPrimaryKey : struct
+    /// <typeparam name="TTenantPrimaryKey">Type of the tenant primary key.</typeparam>
+    public abstract class AbstractEntityWithTenant<TTenantPrimaryKey> : IEntityWithTenant<TTenantPrimaryKey> where TTenantPrimaryKey : struct
     {
         #region IEntity
 
@@ -41,16 +38,6 @@ namespace AlinSpace.Database
         /// </summary>
         [DefaultValue(false)]
         public bool IsDeleted { get; set; }
-
-        #endregion
-
-        #region IEntityWithId
-
-        /// <summary>
-        /// Gets or sets the ID of the entity.
-        /// </summary>
-        [Key]
-        public TPrimaryKey Id { get; set; }
 
         #endregion
 
