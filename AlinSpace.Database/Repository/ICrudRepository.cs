@@ -21,6 +21,20 @@ namespace AlinSpace.Database
         Task<TPrimaryKey> AddAsync(TEntityWithId entity);
 
         /// <summary>
+        /// Get the entity or default value.
+        /// </summary>
+        /// <param name="primaryKey">Primary key.</param>
+        /// <param name="queryableFunc">Optional queryable func.</param>
+        /// <param name="options">Optional query options.</param>
+        /// <param name=""></param>
+        /// <returns>Entity.</returns>
+        Task<TEntityWithId> GetOrDefaultAsync(
+            TPrimaryKey primaryKey,
+            Func<IQueryable<TEntityWithId>, IQueryable<TEntityWithId>> queryableFunc = null,
+            QueryOptions options = null,
+            TEntityWithId defaultValue = default);
+
+        /// <summary>
         /// Gets the entity.
         /// </summary>
         /// <param name="primaryKey">Primary key.</param>

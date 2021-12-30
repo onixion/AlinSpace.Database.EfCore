@@ -39,7 +39,8 @@ namespace AlinSpace.Database.Ef
         public async Task<TEntityWithId> GetOrDefaultAsync(
             TPrimaryKey primaryKey,
             Func<IQueryable<TEntityWithId>, IQueryable<TEntityWithId>> queryableFunc = null,
-            QueryOptions options = null)
+            QueryOptions options = null,
+            TEntityWithId defaultValue = default)
         {
             var repository = transaction.GetRepository<TEntityWithId>();
 
@@ -49,10 +50,9 @@ namespace AlinSpace.Database.Ef
 
             query = queryableFunc?.Invoke(query) ?? query;
 
-            return await query.FirstOrDefaultAsync();
+            return (await query.FirstOrDefaultAsync()) ?? defaultValue;
         }
 
-        // todo maybe make this an extension?
         public async Task<TEntityWithId> GetAsync(
             TPrimaryKey primaryKey,
             Func<IQueryable<TEntityWithId>, IQueryable<TEntityWithId>> queryableFunc = null,
