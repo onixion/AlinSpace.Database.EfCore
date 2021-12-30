@@ -37,7 +37,6 @@ namespace AlinSpace.Database
         /// <summary>
         /// Gets or sets the delete flag.
         /// </summary>
-        [DefaultValue(false)]
         public bool IsDeleted { get; set; }
 
         #endregion
@@ -63,6 +62,20 @@ namespace AlinSpace.Database
         /// </remarks>
         public virtual void OnModelCreating(ModelBuilder modelBuilder, Type entityType, string entityName = null)
         {
+            // Table-per-type inheritance handling.
+            modelBuilder
+                .Entity(entityType)
+                .ToTable(entityName ?? entityType.Name);
+
+            #region IEntity
+
+            modelBuilder
+                .Entity(entityName)
+                .Property(nameof(IsDeleted))
+                .HasDefaultValue(false)
+                .IsRequired(true);
+
+            #endregion
         }
     }
 }

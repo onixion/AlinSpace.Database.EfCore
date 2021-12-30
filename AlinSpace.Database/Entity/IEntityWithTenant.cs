@@ -9,6 +9,6 @@
         /// <summary>
         /// Gets or sets the tenant ID.
         /// </summary>
-        TTenantPrimaryKey TenantId { get; set; }
+        TTenantPrimaryKey? TenantId { get; set; }
     }
 }

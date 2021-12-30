@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-using System.ComponentModel;
 
 namespace AlinSpace.Database
 {
@@ -36,7 +35,6 @@ namespace AlinSpace.Database
         /// <summary>
         /// Gets or sets the delete flag.
         /// </summary>
-        [DefaultValue(false)]
         public bool IsDeleted { get; set; }
 
         #endregion
@@ -46,7 +44,7 @@ namespace AlinSpace.Database
         /// <summary>
         /// Gets or sets the tenant ID.
         /// </summary>
-        public TTenantPrimaryKey TenantId { get; set; }
+        public TTenantPrimaryKey? TenantId { get; set; }
 
         #endregion
 
@@ -62,8 +60,29 @@ namespace AlinSpace.Database
         public virtual void OnModelCreating(ModelBuilder modelBuilder, Type entityType, string entityName = null)
         {
             // Table-per-type inheritance handling.
-            modelBuilder.Entity(entityType)
+            modelBuilder
+                .Entity(entityType)
                 .ToTable(entityName ?? entityType.Name);
+
+            #region IEntity
+
+            modelBuilder
+                .Entity(entityName)
+                .Property(nameof(IsDeleted))
+                .HasDefaultValue(false)
+                .IsRequired(true);
+
+            #endregion
+
+            #region IEntityWithTenant
+
+            modelBuilder
+                .Entity(entityName)
+                .Property(nameof(TenantId))
+                .HasDefaultValue(null)
+                .IsRequired(false);
+
+            #endregion
         }
     }
 }
