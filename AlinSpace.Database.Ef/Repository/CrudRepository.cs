@@ -95,6 +95,10 @@ namespace AlinSpace.Database.Ef
 
             updateAction(entity);
 
+            // In case the update action changed it.
+            // Changing the ID is not possible.
+            entity.Id = primaryKey;
+
             await UpdateAsync(entity, commit);
         }
 
