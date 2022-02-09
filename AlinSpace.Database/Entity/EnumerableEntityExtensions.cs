@@ -12,8 +12,8 @@ namespace AlinSpace.Database
         /// Set soft deletion for entities.
         /// </summary>
         /// <param name="entities">Entities.</param>
-        /// <param name="isSoftDeleted">Is soft deleted.</param>
-        public static void SetSoftDeletion(this IEnumerable<IEntity> entities, bool isSoftDeleted)
+        /// <param name="isSoftDeleted">Soft deleted flag.</param>
+        public static void SetSoftDeleted(this IEnumerable<IEntity> entities, bool isSoftDeleted)
         {
             foreach(var entity in entities)
             {
@@ -22,16 +22,16 @@ namespace AlinSpace.Database
         }
 
         /// <summary>
-        /// Set modification timestamp for entities.
+        /// Updates the modification timestamp for entities.
         /// </summary>
         /// <param name="entities">Entities.</param>
-        /// <param name="modificationTimestamp">Modification timestamp.</param>
+        /// <param name="modificationTimestamp">Optionalm modification timestamp.</param>
         /// <remarks>
-        /// If <paramref name="modificationTimestamp"/> is set to null, UTC now will be used.
+        /// If <paramref name="modificationTimestamp"/> is set to null, UTCNow will be used.
         /// </remarks>
-        public static void SetModificationTimestamp(this IEnumerable<IEntity> entities, DateTimeOffset? modificationTimestamp = null)
+        public static void UpdateModificationTimestamp(this IEnumerable<IEntity> entities, DateTimeOffset? modificationTimestamp = null)
         {
-            modificationTimestamp = modificationTimestamp ?? DateTimeOffset.UtcNow;
+            modificationTimestamp ??= DateTimeOffset.UtcNow;
 
             foreach (var entity in entities)
             {

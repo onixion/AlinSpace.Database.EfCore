@@ -3,33 +3,16 @@ using System.Collections.Generic;
 
 namespace AlinSpace.Database
 {
-    /// <summary>
-    /// Repository registry.
-    /// </summary>
-    public class RepositoryRegistry
+    class RepositoryRegistry
     {
-        /// <summary>
-        /// Repository mappings.
-        /// </summary>
         private readonly IDictionary<Type, Lazy<object>> repositories = new Dictionary<Type, Lazy<object>>();
 
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        public RepositoryRegistry(IEnumerable<RepositoryRegistration> registrations)
+        public void Register(Type entityType, Lazy<object> repositoryProvider)
         {
-            foreach(var registration in registrations)
-            {
-                repositories[registration.Key] = registration.RepositoryProvider;
-            }
+            repositories[entityType] = repositoryProvider;
         }
 
-        /// <summary>
-        /// Get repository.
-        /// </summary>
-        /// <typeparam name="TEntity">Type of the entity.</typeparam>
-        /// <returns>Repository.</returns>
-        public IRepository<TEntity> GetRepository<TEntity>() where TEntity : class
+        public IRepository<TEntity> GetRepository<TEntity>() where TEntity : IEntity
         {
             if (!repositories.TryGetValue(typeof(TEntity), out Lazy<object> repository))
                 throw new Exception($"No repository found found for entity type {typeof(TEntity)}.");

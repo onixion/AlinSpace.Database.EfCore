@@ -1,41 +1,67 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace AlinSpace.Database
 {
     /// <summary>
     /// Represents the factory.
     /// </summary>
-    /// <typeparam name="TContext">Type of context.</typeparam>
-    public class TransactionFactory<TContext> where TContext : class
+    public static class TransactionFactory
     {
-        private readonly Action<TContext, RepositoryRegistryBuilder> registryConfigurator;
-        private readonly Func<TContext, RepositoryRegistry, ITransaction> transactionProvider;
+        private static readonly IDictionary<Type, IList<PropertyInfo>> dbContextMap = new Dictionary<Type, IList<PropertyInfo>>();
 
         /// <summary>
-        /// Constructor.
+        /// Create transaction.
         /// </summary>
-        /// <param name="registryConfigurator">Registry configurator.</param>
-        /// <param name="transactionProvider">Transaction provider.</param>
-        public TransactionFactory(
-            Action<TContext, RepositoryRegistryBuilder> registryConfigurator,
-            Func<TContext, RepositoryRegistry, ITransaction> transactionProvider)
-        {
-            this.registryConfigurator = registryConfigurator ?? throw new ArgumentNullException(nameof(registryConfigurator));
-            this.transactionProvider = transactionProvider ?? throw new ArgumentNullException(nameof(transactionProvider));
-        }
-        
-        /// <summary>
-        /// Create transaction from the given context.
-        /// </summary>
-        /// <param name="context">Transaction context.</param>
+        /// <param name="dbContextType">DbContext type.</param>
+        /// <param name="options">DbContext options.</param>
         /// <returns>Transaction.</returns>
-        public ITransaction CreateTransaction(TContext context)
+        public static ITransaction Create(Type dbContextType, DbContextOptions options = null)
         {
-            var repositoryBuilder = new RepositoryRegistryBuilder();
-            registryConfigurator(context, repositoryBuilder);
+            var dbContext = Activator.CreateInstance(dbContextType, new object[] { options });
 
-            var repository = repositoryBuilder.Build();
-            return transactionProvider(context, repository);
+            if(!dbContextMap.TryGetValue(dbContextType, out var properties))
+            {
+                properties = dbContextType
+                    .GetProperties()
+                    .Where(x => x.PropertyType.IsGenericType ? x.PropertyType.GetGenericTypeDefinition() == typeof(DbSet<>) : false)
+                    .ToList();
+
+                dbContextMap[dbContextType] = properties;
+            }
+
+            var repositoryRegistry = new RepositoryRegistry();
+
+            foreach(var property in properties)
+            {
+                var entityType = property.PropertyType.GenericTypeArguments.First();
+                var repositoryType = typeof(Repository<>).MakeGenericType(entityType);
+
+                var repositoryProvider = new Lazy<object>(() =>
+                {
+                    var dbSet = property.GetValue(dbContext);
+                    return Activator.CreateInstance(repositoryType, new object[] { dbContext, dbSet });
+                }, 
+                true);
+
+                repositoryRegistry.Register(entityType, repositoryProvider);
+            }
+
+            return new Transaction((DbContext)dbContext, repositoryRegistry);
+        }
+
+        /// <summary>
+        /// Create transaction.
+        /// </summary>
+        /// <typeparam name="TDbContext">Type of database context.</typeparam>
+        /// <param name="options">DbContext options.</param>
+        /// <returns>Transaction.</returns>
+        public static ITransaction Create<TDbContext>(DbContextOptions options = null) where TDbContext : DbContext
+        {
+            return Create(typeof(TDbContext), options);
         }
     }
 }

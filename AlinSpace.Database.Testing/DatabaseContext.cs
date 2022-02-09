@@ -1,9 +1,9 @@
-﻿using AlinSpace.Database.Ef.Testing.Models;
+﻿using AlinSpace.Database.Testing.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace AlinSpace.Database.Ef.Testing
+namespace AlinSpace.Database.Testing
 {
-    public class DatabaseContext : AbstractTenantDbContext
+    public class DatabaseContext: DbContext
     {
         public DbSet<Book> Book { get; set; }
 

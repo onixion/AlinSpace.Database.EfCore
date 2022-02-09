@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace AlinSpace.Database
 {
@@ -8,6 +9,29 @@ namespace AlinSpace.Database
     /// </summary>
     public interface IEntity
     {
+        /// <summary>
+        /// Gets or sets the ID of the entity.
+        /// </summary>
+        [Key]
+        long Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets the tenant ID.
+        /// </summary>
+        long? TenantId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the delete flag.
+        /// </summary>
+        bool IsDeleted { get; set; }
+
+        /// <summary>
+        /// Gets or sets meta data.
+        /// </summary>
+        string MetaData { get; set; }
+
+        #region Timestamps
+
         /// <summary>
         /// Gets or sets the creation timestamp.
         /// </summary>
@@ -25,14 +49,14 @@ namespace AlinSpace.Database
         DateTimeOffset? ModificationTimestamp { get; set; }
 
         /// <summary>
-        /// Gets or sets meta data.
+        /// Gets or sets the deletion timestamp.
         /// </summary>
-        string MetaData { get; set; }
+        /// <remarks>
+        /// In UTC.
+        /// </remarks>
+        DateTimeOffset? DeletionTimestamp { get; set; }
 
-        /// <summary>
-        /// Gets or sets the delete flag.
-        /// </summary>
-        bool IsDeleted { get; set; }
+        #endregion
 
         /// <summary>
         /// On model creating.

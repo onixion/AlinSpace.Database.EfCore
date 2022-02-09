@@ -2,9 +2,9 @@
 using System;
 using System.Collections.Generic;
 
-namespace AlinSpace.Database.Ef.Testing.Models
+namespace AlinSpace.Database.Testing.Models
 {
-    public class Book : AbstractTenantEntity<long>
+    public class Book : AbstractEntity
     {
         public ICollection<Page> Pages { get; set; }
 

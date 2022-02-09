@@ -1,18 +1,34 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace AlinSpace.Database
 {
     /// <summary>
     /// Represent the abstract default implementation of the entity.
     /// </summary>
-    public abstract class AbstractEntity<TPrimaryKey, TTenantPrimaryKey> 
-        : IEntityWithId<TPrimaryKey>, IEntityWithTenant<TTenantPrimaryKey>
-        where TPrimaryKey : struct
-        where TTenantPrimaryKey : struct
+    public abstract class AbstractEntity : IEntity
     {
-        #region IEntity
+        /// <summary>
+        /// Gets or sets the ID of the entity.
+        /// </summary>
+        public long Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets the tenant ID.
+        /// </summary>
+        public long? TenantId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the delete flag.
+        /// </summary>
+        public bool IsDeleted { get; set; }
+
+        /// <summary>
+        /// Gets or sets meta data.
+        /// </summary>
+        public string MetaData { get; set; }
+
+        #region Timestamps
 
         /// <summary>
         /// Gets or sets the creation timestamp.
@@ -31,33 +47,12 @@ namespace AlinSpace.Database
         public DateTimeOffset? ModificationTimestamp { get; set; }
 
         /// <summary>
-        /// Gets or sets meta data.
+        /// Gets or sets the deletion timestamp.
         /// </summary>
-        public string MetaData { get; set; }
-
-        /// <summary>
-        /// Gets or sets the delete flag.
-        /// </summary>
-        public bool IsDeleted { get; set; }
-
-        #endregion
-
-        #region IEntityWithId
-
-        /// <summary>
-        /// Gets or sets the ID of the entity.
-        /// </summary>
-        [Key]
-        public TPrimaryKey Id { get; set; }
-
-        #endregion
-
-        #region IEntityWithTenant
-
-        /// <summary>
-        /// Gets or sets the tenant ID.
-        /// </summary>
-        public TTenantPrimaryKey? TenantId { get; set; }
+        /// <remarks>
+        /// In UTC.
+        /// </remarks>
+        public DateTimeOffset? DeletionTimestamp { get; set; }
 
         #endregion
 
@@ -72,30 +67,28 @@ namespace AlinSpace.Database
         /// </remarks>
         public virtual void OnModelCreating(ModelBuilder modelBuilder, Type entityType, string entityName = null)
         {
+            entityName ??= entityType.Name;
+
             // Table-per-type inheritance handling.
             modelBuilder
                 .Entity(entityType)
-                .ToTable(entityName ?? entityType.Name);
-
-            #region IEntity
+                .ToTable(entityName);
 
             modelBuilder
-                .Entity(entityName)
-                .Property(nameof(IsDeleted))
-                .HasDefaultValue(false)
-                .IsRequired(true);
-
-            #endregion
-
-            #region IEntityWithTenant
+                .Entity(entityType)
+                .HasIndex(nameof(Id));
 
             modelBuilder
-                .Entity(entityName)
+                .Entity(entityType)
                 .Property(nameof(TenantId))
                 .HasDefaultValue(null)
                 .IsRequired(false);
 
-            #endregion
+            modelBuilder
+                .Entity(entityType)
+                .Property(nameof(IsDeleted))
+                .HasDefaultValue(false)
+                .IsRequired(true);
         }
     }
 }

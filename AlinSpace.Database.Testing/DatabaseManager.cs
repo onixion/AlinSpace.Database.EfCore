@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.IO;
 
-namespace AlinSpace.Database.Ef.Testing
+namespace AlinSpace.Database.Testing
 {
     static class DatabaseManager
     {
