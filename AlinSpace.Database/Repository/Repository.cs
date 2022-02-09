@@ -188,7 +188,7 @@ namespace AlinSpace.Database
 
         #region Collection
 
-        public IEnumerable<TEntity> GetMany(Filter<TEntity> filter = null, Pager pager = null, Includer<TEntity> includer = null)
+        public IEnumerable<TEntity> FindMany(Filter<TEntity> filter = null, Pager pager = null, Includer<TEntity> includer = null)
         {
             var query = Query;
 
@@ -204,7 +204,7 @@ namespace AlinSpace.Database
             return query.ToList();
         }
 
-        public async Task<IEnumerable<TEntity>> GetManyAsync(Filter<TEntity> filter = null, Pager pager = null, Includer<TEntity> includer = null)
+        public async Task<IEnumerable<TEntity>> FindManyAsync(Filter<TEntity> filter = null, Pager pager = null, Includer<TEntity> includer = null)
         {
             var query = Query;
 

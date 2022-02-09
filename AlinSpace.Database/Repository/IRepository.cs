@@ -117,22 +117,22 @@ namespace AlinSpace.Database
         #region Collection
 
         /// <summary>
-        /// Gets many entities.
+        /// Finds many entities.
         /// </summary>
         /// <param name="filter">Optional filter to apply.</param>
         /// <param name="pager">Optional pager to apply.</param>
         /// <param name="includer">Optional includer to apply.</param>
         /// <returns>Entities.</returns>
-        IEnumerable<TEntity> GetMany(Filter<TEntity> filter = null, Pager pager = null, Includer<TEntity> includer = null);
+        IEnumerable<TEntity> FindMany(Filter<TEntity> filter = null, Pager pager = null, Includer<TEntity> includer = null);
 
         /// <summary>
-        /// Gets many entities.
+        /// Finds many entities.
         /// </summary>
         /// <param name="filter">Optional filter to apply.</param>
         /// <param name="pager">Optional pager to apply.</param>
         /// <param name="includer">Optional includer to apply.</param>
         /// <returns>Entities.</returns>
-        Task<IEnumerable<TEntity>> GetManyAsync(Filter<TEntity> filter = null, Pager pager = null, Includer<TEntity> includer = null);
+        Task<IEnumerable<TEntity>> FindManyAsync(Filter<TEntity> filter = null, Pager pager = null, Includer<TEntity> includer = null);
 
         #endregion
 
