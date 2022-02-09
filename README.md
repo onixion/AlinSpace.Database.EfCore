@@ -2,16 +2,16 @@
 
 # AlinSpace.Database
 
-is a **Database abstraction layer**. It helps to simplify the process of working with data through EntityFrameworkCore.
-In order to keep the library simple, some decisions have been made:
+is a **Database abstraction layer**. It helps to simplify the process of working with data through *EntityFrameworkCore*.
 
+In order to keep the library simple, some decisions have been made:
 - **long** is used for **all primary keys**. Use hash IDs to map the primary key to strings, or add additional fields.
 
-# Examples
+# Example
 
  ```csharp
  // Prepare database context options.
- var options = new DbContextOptionsBuilder<MyDbContext>().Options
+ var options = optionsBuilder.Build();
  
 // Create the transaction object.
 var transaction = TransactionFactory.Create<MyDbContext>(options);
