@@ -1,9 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
 	<TargetFrameworks>netstandard2.1;net5.0;net6.0</TargetFrameworks>
-    <Version>6.1.1</Version>
+    <Version>6.1.2</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Copyright>Copyright © 2022 Alin Andersen</Copyright>
+    <Copyright>Copyright © 2021-2022 Alin Andersen</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>alinspace database entityframework ef alin space transaction</PackageTags>
     <RepositoryUrl>https://github.com/onixion/AlinSpace.Database</RepositoryUrl>

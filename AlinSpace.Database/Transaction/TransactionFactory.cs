@@ -16,14 +16,13 @@ namespace AlinSpace.Database
         /// <summary>
         /// Create transaction.
         /// </summary>
-        /// <param name="dbContextType">DbContext type.</param>
-        /// <param name="options">DbContext options.</param>
+        /// <param name="dbContext">DbContext.</param>
         /// <returns>Transaction.</returns>
-        public static ITransaction Create(Type dbContextType, DbContextOptions options = null)
+        public static ITransaction Create(DbContext dbContext)
         {
-            var dbContext = Activator.CreateInstance(dbContextType, new object[] { options });
+            var dbContextType = dbContext.GetType();
 
-            if(!dbContextMap.TryGetValue(dbContextType, out var properties))
+            if (!dbContextMap.TryGetValue(dbContextType, out var properties))
             {
                 properties = dbContextType
                     .GetProperties()
@@ -35,7 +34,7 @@ namespace AlinSpace.Database
 
             var repositoryRegistry = new RepositoryRegistry();
 
-            foreach(var property in properties)
+            foreach (var property in properties)
             {
                 var entityType = property.PropertyType.GenericTypeArguments.First();
                 var repositoryType = typeof(Repository<>).MakeGenericType(entityType);
@@ -44,13 +43,25 @@ namespace AlinSpace.Database
                 {
                     var dbSet = property.GetValue(dbContext);
                     return Activator.CreateInstance(repositoryType, new object[] { dbContext, dbSet });
-                }, 
+                },
                 true);
 
                 repositoryRegistry.Register(entityType, repositoryProvider);
             }
 
-            return new Transaction((DbContext)dbContext, repositoryRegistry);
+            return new Transaction(dbContext, repositoryRegistry);
+        }
+
+        /// <summary>
+        /// Create transaction.
+        /// </summary>
+        /// <param name="dbContextType">DbContext type.</param>
+        /// <param name="options">DbContext options.</param>
+        /// <returns>Transaction.</returns>
+        public static ITransaction Create(Type dbContextType, DbContextOptions options = null)
+        {
+            var dbContext = (DbContext)Activator.CreateInstance(dbContextType, new object[] { options });
+            return Create(dbContext);
         }
 
         /// <summary>
