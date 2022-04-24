@@ -1,6 +1,6 @@
 <img src="https://github.com/onixion/AlinSpace.Database/blob/main/Assets/Icon.png" width="200" height="200">
 
-# AlinSpace.Database
+# AlinSpace.Database.EfCore
 
 is a **Database abstraction layer**. It helps to simplify the process of working with data through *EntityFrameworkCore*.
 
@@ -34,7 +34,7 @@ userRepository.Find(...);
 userRepository.FindMany(...);
 
 // Create custom query.
-var query = userRepository.Query;
+var query = userRepository.NewQuery();
 
 // Commit changes.
 transaction.Commit();
