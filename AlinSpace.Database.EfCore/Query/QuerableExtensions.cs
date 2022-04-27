@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace AlinSpace.Database.EfCore
 {
@@ -59,6 +60,23 @@ namespace AlinSpace.Database.EfCore
             this IQueryable<TEntity> queryable) where TEntity : IEntity
         {
             return queryable.Where(x => x.IsDeleted == false);
+        }
+
+        /// <summary>
+        /// Takes a page from the queryable.
+        /// </summary>
+        /// <typeparam name="TEntity">Type of entity.</typeparam>
+        /// <param name="queryable">Queryable.</param>
+        /// <param name="pager">Pager to use to retrieve the page.</param>
+        /// <returns>Page of the queryable.</returns>
+        public static IQueryable<TEntity> TakePage<TEntity>(
+            this IQueryable<TEntity> queryable,
+            Pager pager) where TEntity : IEntity
+        {
+            if (pager == null)
+                throw new ArgumentNullException(nameof(pager));
+
+            return pager.TakePage(queryable);
         }
     }
 }

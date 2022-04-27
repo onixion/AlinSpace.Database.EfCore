@@ -9,7 +9,7 @@ namespace AlinSpace.Database.EfCore
     /// Represents the repository interface.
     /// </summary>
     /// <typeparam name="TEntity">Type of the entity.</typeparam>
-    public interface IRepository<TEntity>where TEntity : class, IEntity
+    public interface IRepository<TEntity> where TEntity : class, IEntity
     {
         /// <summary>
         /// Gets the DB set.
