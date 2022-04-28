@@ -34,22 +34,20 @@ namespace AlinSpace.Database.EfCore
 
         #region Get
 
-        public TEntity Get(long id, Includer<TEntity> includer = null)
+        public TEntity Get(long id, QueryOperation<TEntity> includer = null)
         {
             var query = NewQuery().Where(x => x.Id == id);
 
-            if (includer != null)
-                query = includer.IncluderOperation(query);
+            query = includer?.Invoke(query) ?? query;
 
             return query.First();
         }
 
-        public TEntity GetOrDefault(long id, Includer<TEntity> includer = null)
+        public TEntity GetOrDefault(long id, QueryOperation<TEntity> includer = null)
         {
             var query = NewQuery().Where(x => x.Id == id);
 
-            if (includer != null)
-                query = includer.IncluderOperation(query);
+            query = includer?.Invoke(query) ?? query;
 
             return query.FirstOrDefault();
         }
@@ -58,22 +56,20 @@ namespace AlinSpace.Database.EfCore
 
         #region Get Async
 
-        public async Task<TEntity> GetAsync(long id, Includer<TEntity> includer = null)
+        public async Task<TEntity> GetAsync(long id, QueryOperation<TEntity> includer = null)
         {
             var query = NewQuery().Where(x => x.Id == id);
 
-            if (includer != null)
-                query = includer.IncluderOperation(query);
+            query = includer?.Invoke(query) ?? query;
 
             return await query.FirstAsync();
         }
 
-        public async Task<TEntity> GetOrDefaultAsync(long id, Includer<TEntity> includer = null)
+        public async Task<TEntity> GetOrDefaultAsync(long id, QueryOperation<TEntity> includer = null)
         {
             var query = NewQuery().Where(x => x.Id == id);
 
-            if (includer != null)
-                query = includer.IncluderOperation(query);
+            query = includer?.Invoke(query) ?? query;
 
             return await query.FirstOrDefaultAsync();
         }
@@ -184,34 +180,28 @@ namespace AlinSpace.Database.EfCore
 
         #region Collection
 
-        public IEnumerable<TEntity> FindMany(Filter<TEntity> filter = null, Pager pager = null, Includer<TEntity> includer = null)
+        public IEnumerable<TEntity> FindMany(QueryOperation<TEntity> filter = null, Pager pager = null, QueryOperation<TEntity> includer = null)
         {
             var query = NewQuery();
 
-            if (filter != null)
-                query = filter.FilterOperation(query);
-
-            if (pager != null)
-                query = pager.TakePage(query);
-
-            if (includer != null)
-                query = includer.IncluderOperation(query);
+            query = filter?.Invoke(query) ?? query;
+            
+            query = pager?.TakePage(query) ?? query;
+            
+            query = includer?.Invoke(query) ?? query;
 
             return query.ToList();
         }
 
-        public async Task<IEnumerable<TEntity>> FindManyAsync(Filter<TEntity> filter = null, Pager pager = null, Includer<TEntity> includer = null)
+        public async Task<IEnumerable<TEntity>> FindManyAsync(QueryOperation<TEntity> filter = null, Pager pager = null, QueryOperation<TEntity> includer = null)
         {
             var query = NewQuery();
 
-            if (filter != null)
-                query = filter.FilterOperation(query);
+            query = filter?.Invoke(query) ?? query;
 
-            if (pager != null)
-                query = pager.TakePage(query);
+            query = pager?.TakePage(query) ?? query;
 
-            if (includer != null)
-                query = includer.IncluderOperation(query);
+            query = includer?.Invoke(query) ?? query;
 
             return await query.ToListAsync();
         }
@@ -220,28 +210,24 @@ namespace AlinSpace.Database.EfCore
 
         #region Find
 
-        public TEntity FindFirst(Filter<TEntity> filter = null, Includer<TEntity> includer = null)
+        public TEntity FindFirst(QueryOperation<TEntity> filter = null, QueryOperation<TEntity> includer = null)
         {
             var query = NewQuery();
 
-            if (filter != null)
-                query = filter.FilterOperation(query);
+            query = filter?.Invoke(query) ?? query;
 
-            if (includer != null)
-                query = includer.IncluderOperation(query);
+            query = includer?.Invoke(query) ?? query;
 
             return query.First();
         }
 
-        public TEntity FindFirstOrDefault(Filter<TEntity> filter = null, Includer<TEntity> includer = null)
+        public TEntity FindFirstOrDefault(QueryOperation<TEntity> filter = null, QueryOperation<TEntity> includer = null)
         {
             var query = NewQuery();
 
-            if (filter != null)
-                query = filter.FilterOperation(query);
+            query = filter?.Invoke(query) ?? query;
 
-            if (includer != null)
-                query = includer.IncluderOperation(query);
+            query = includer?.Invoke(query) ?? query;
 
             return query.FirstOrDefault();
         }
@@ -250,28 +236,24 @@ namespace AlinSpace.Database.EfCore
 
         #region Find Async
 
-        public async Task<TEntity> FindFirstAsync(Filter<TEntity> filter = null, Includer<TEntity> includer = null)
+        public async Task<TEntity> FindFirstAsync(QueryOperation<TEntity> filter = null, QueryOperation<TEntity> includer = null)
         {
             var query = NewQuery();
 
-            if (filter != null)
-                query = filter.FilterOperation(query);
+            query = filter?.Invoke(query) ?? query;
 
-            if (includer != null)
-                query = includer.IncluderOperation(query);
+            query = includer?.Invoke(query) ?? query;
 
             return await query.FirstAsync();
         }
 
-        public async Task<TEntity> FindFirstOrDefaultAsync(Filter<TEntity> filter = null, Includer<TEntity> includer = null)
+        public async Task<TEntity> FindFirstOrDefaultAsync(QueryOperation<TEntity> filter = null, QueryOperation<TEntity> includer = null)
         {
             var query = NewQuery();
 
-            if (filter != null)
-                query = filter.FilterOperation(query);
+            query = filter?.Invoke(query) ?? query;
 
-            if (includer != null)
-                query = includer.IncluderOperation(query);
+            query = includer?.Invoke(query) ?? query;
 
             return await query.FirstOrDefaultAsync();
         }

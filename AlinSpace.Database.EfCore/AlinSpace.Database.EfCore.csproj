@@ -1,11 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
 	<TargetFrameworks>netstandard2.1;net5.0;net6.0</TargetFrameworks>
-    <Version>6.2.0</Version>
+    <Version>6.2.1</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Copyright>Copyright © 2021-2022 Alin Andersen</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageTags>alinspace database entityframework ef alin space transaction</PackageTags>
+    <PackageTags>alinspace; database; entityframework; ef; alin; space; transaction; db; data</PackageTags>
     <RepositoryUrl>https://github.com/onixion/AlinSpace.Database.EfCore</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageProjectUrl>https://github.com/onixion/AlinSpace.Database.EfCore.git</PackageProjectUrl>

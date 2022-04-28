@@ -33,7 +33,7 @@ namespace AlinSpace.Database.EfCore
         /// <param name="id">ID of the entity.</param>
         /// <param name="includer">Optional includer to apply.</param>
         /// <returns>Entity.</returns>
-        TEntity Get(long id, Includer<TEntity> includer = null);
+        TEntity Get(long id, QueryOperation<TEntity> includer = null);
 
         /// <summary>
         /// Gets the entity or default.
@@ -41,7 +41,7 @@ namespace AlinSpace.Database.EfCore
         /// <param name="id">ID of the entity.</param>
         /// <param name="includer">Optional includer to apply.</param>
         /// <returns>Entity or default.</returns>
-        TEntity GetOrDefault(long id, Includer<TEntity> includer = null);
+        TEntity GetOrDefault(long id, QueryOperation<TEntity> includer = null);
 
         #endregion
 
@@ -53,7 +53,7 @@ namespace AlinSpace.Database.EfCore
         /// <param name="id">ID of the entity.</param>
         /// <param name="includer">Optional includer to apply.</param>
         /// <returns>Entity.</returns>
-        Task<TEntity> GetAsync(long id, Includer<TEntity> includer = null);
+        Task<TEntity> GetAsync(long id, QueryOperation<TEntity> includer = null);
 
         /// <summary>
         /// Gets the entity or default asynchronously.
@@ -61,7 +61,7 @@ namespace AlinSpace.Database.EfCore
         /// <param name="id">ID of the entity.</param>
         /// <param name="includer">Optional includer to apply.</param>
         /// <returns>Entity or default.</returns>
-        Task<TEntity> GetOrDefaultAsync(long id, Includer<TEntity> includer = null);
+        Task<TEntity> GetOrDefaultAsync(long id, QueryOperation<TEntity> includer = null);
 
         #endregion
 
@@ -126,7 +126,7 @@ namespace AlinSpace.Database.EfCore
         /// <param name="pager">Optional pager to apply.</param>
         /// <param name="includer">Optional includer to apply.</param>
         /// <returns>Entities.</returns>
-        IEnumerable<TEntity> FindMany(Filter<TEntity> filter = null, Pager pager = null, Includer<TEntity> includer = null);
+        IEnumerable<TEntity> FindMany(QueryOperation<TEntity> filter = null, Pager pager = null, QueryOperation<TEntity> includer = null);
 
         /// <summary>
         /// Finds many entities.
@@ -135,7 +135,7 @@ namespace AlinSpace.Database.EfCore
         /// <param name="pager">Optional pager to apply.</param>
         /// <param name="includer">Optional includer to apply.</param>
         /// <returns>Entities.</returns>
-        Task<IEnumerable<TEntity>> FindManyAsync(Filter<TEntity> filter = null, Pager pager = null, Includer<TEntity> includer = null);
+        Task<IEnumerable<TEntity>> FindManyAsync(QueryOperation<TEntity> filter = null, Pager pager = null, QueryOperation<TEntity> includer = null);
 
         #endregion
 
@@ -147,7 +147,7 @@ namespace AlinSpace.Database.EfCore
         /// <param name="filter">Filter to apply.</param>
         /// <param name="includer">Includer to apply.</param>
         /// <returns>Found entity.</returns>
-        TEntity FindFirst(Filter<TEntity> filter = null, Includer<TEntity> includer = null);
+        TEntity FindFirst(QueryOperation<TEntity> filter = null, QueryOperation<TEntity> includer = null);
 
         /// <summary>
         /// Finds the entity or default.
@@ -155,7 +155,7 @@ namespace AlinSpace.Database.EfCore
         /// <param name="filter">Filter to apply.</param>
         /// <param name="includer">Includer to apply.</param>
         /// <returns>Found entity or default.</returns>
-        TEntity FindFirstOrDefault(Filter<TEntity> filter = null, Includer<TEntity> includer = null);
+        TEntity FindFirstOrDefault(QueryOperation<TEntity> filter = null, QueryOperation<TEntity> includer = null);
 
         #endregion
 
@@ -167,7 +167,7 @@ namespace AlinSpace.Database.EfCore
         /// <param name="filter">Filter to apply.</param>
         /// <param name="includer">Includer to apply.</param>
         /// <returns>Found entity.</returns>
-        Task<TEntity> FindFirstAsync(Filter<TEntity> filter = null, Includer<TEntity> includer = null);
+        Task<TEntity> FindFirstAsync(QueryOperation<TEntity> filter = null, QueryOperation<TEntity> includer = null);
 
         /// <summary>
         /// Finds the entity or default asynchronously.
@@ -175,7 +175,7 @@ namespace AlinSpace.Database.EfCore
         /// <param name="filter">Filter to apply.</param>
         /// <param name="includer">Includer to apply.</param>
         /// <returns>Found entity or default.</returns>
-        Task<TEntity> FindFirstOrDefaultAsync(Filter<TEntity> filter = null, Includer<TEntity> includer = null);
+        Task<TEntity> FindFirstOrDefaultAsync(QueryOperation<TEntity> filter = null, QueryOperation<TEntity> includer = null);
 
         #endregion
     }

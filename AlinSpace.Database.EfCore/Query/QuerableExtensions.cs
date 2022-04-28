@@ -8,6 +8,8 @@ namespace AlinSpace.Database.EfCore
     /// </summary>
     public static class QuerableExtensions
     {
+        #region Tenant
+
         /// <summary>
         /// Filter querable for tenant ID equals to the value given.
         /// </summary>
@@ -38,6 +40,10 @@ namespace AlinSpace.Database.EfCore
             return queryable.Where(x => !x.TenantId.HasValue || x.TenantId.Equals(tenantId) );
         }
 
+        #endregion
+
+        #region Deletion
+
         /// <summary>
         /// Filter entities that are soft deleted.
         /// </summary>
@@ -62,6 +68,8 @@ namespace AlinSpace.Database.EfCore
             return queryable.Where(x => x.IsDeleted == false);
         }
 
+        #endregion
+
         /// <summary>
         /// Takes a page from the queryable.
         /// </summary>
@@ -77,6 +85,26 @@ namespace AlinSpace.Database.EfCore
                 throw new ArgumentNullException(nameof(pager));
 
             return pager.TakePage(queryable);
+        }
+
+        /// <summary>
+        /// Where timestamp is in the given range.
+        /// </summary>
+        /// <typeparam name="TEntity">Type of entity.</typeparam>
+        /// <param name="queryable">Queryable.</param>
+        /// <param name="timestampSelector">Timestamp selector.</param>
+        /// <param name="from">From timestamp.</param>
+        /// <param name="to">To timestamp.</param>
+        /// <returns>Queryable.</returns>
+        public static IQueryable<TEntity> WhereTimestamp<TEntity>(
+            this IQueryable<TEntity> queryable,
+            Func<TEntity, DateTimeOffset> timestampSelector,
+            DateTimeOffset from,
+            DateTimeOffset to) where TEntity : IEntity
+        {
+            return queryable.Where(x =>
+                timestampSelector(x) >= from &&
+                timestampSelector(x) <= to);
         }
     }
 }

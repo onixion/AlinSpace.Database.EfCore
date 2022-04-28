@@ -23,14 +23,8 @@ namespace AlinSpace.Database.EfCore.Testing
 
                 using (var transaction = TransactionFactory.Create<DatabaseContext>(dbContextOptions))
                 {
-                    //var bookRepository = transaction.GetRepository<Models.Book>();
-                    //var pageRepository = transaction.GetRepository<Models.Page>();
-
-                    //bookRepository.Create(new Models.Book());
-                    //transaction.Commit();
-
-                    //var books = bookRepository.Query.ToList();
-
+                    var bookRepository = transaction.GetRepository<Models.Book>();
+                    var pageRepository = transaction.GetRepository<Models.Page>();
 
                 }
             }
