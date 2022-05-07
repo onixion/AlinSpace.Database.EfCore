@@ -18,16 +18,9 @@ namespace AlinSpace.Database.EfCore
 
         public DbSet<TEntity> DbSet { get; private set; }
 
-        public IQueryable<TEntity> NewQuery(bool tracking = false)
+        public IQueryable<TEntity> NewQuery()
         {
-            if (tracking)
-            {
-                return DbSet.AsTracking();
-            }
-            else
-            {
-                return DbSet;
-            }
+            return DbSet.AsNoTracking();
         }
 
         #region Crud
@@ -78,102 +71,102 @@ namespace AlinSpace.Database.EfCore
 
         public void Create(TEntity entity)
         {
+            if (entity.Id != default)
+                throw new PrimaryKeyException();
+
             entity.CreationTimestamp = DateTimeOffset.UtcNow;
             DbSet.Add(entity);
         }
 
         public async Task CreateAsync(TEntity entity)
         {
-            entity.CreationTimestamp = DateTimeOffset.UtcNow;
+            if (entity.Id != default)
+                throw new PrimaryKeyException($"Primary key of entity ({typeof(TEntity).FullName}) set before creation.");
+
             await DbSet.AddAsync(entity);
+            entity.CreationTimestamp = DateTimeOffset.UtcNow;
         }
 
         public void CreateOrUpdate(TEntity entity)
         {
             if (entity.Id == default)
             {
+                dbContext.Entry(entity).State = EntityState.Added;
                 entity.CreationTimestamp = DateTimeOffset.UtcNow;
             }
             else
             {
+                dbContext.Entry(entity).State = EntityState.Modified;
                 entity.ModificationTimestamp = DateTimeOffset.UtcNow;
             }
-
-            DbSet.Update(entity);
         }
 
-        public Task CreateOrUpdateAsync(TEntity entity)
+        public async Task CreateOrUpdateAsync(TEntity entity)
         {
             if (entity.Id == default)
             {
+                await DbSet.AddAsync(entity);
                 entity.CreationTimestamp = DateTimeOffset.UtcNow;
             }
             else
             {
+                dbContext.Entry(entity).State = EntityState.Modified;
                 entity.ModificationTimestamp = DateTimeOffset.UtcNow;
             }
+        }
 
-            DbSet.Update(entity);
-            return Task.CompletedTask;
+        public async Task CreateOrUpdateAsync(TEntity entity, Action<TEntity> update)
+        {
+            if (entity.Id == default)
+            {
+                await DbSet.AddAsync(entity);
+            }
+            else
+            {
+                dbContext.Entry(entity).State = EntityState.Unchanged;
+            }
+
+            update(entity);
+            entity.CreationTimestamp = DateTimeOffset.UtcNow;
         }
 
         public void Update(TEntity entity)
         {
             if (entity.Id == default)
-            {
-                entity.CreationTimestamp = DateTimeOffset.UtcNow;
-            }
-            else
-            {
-                entity.ModificationTimestamp = DateTimeOffset.UtcNow;
-            }
+                throw new PrimaryKeyException($"Primary key of entity ({typeof(TEntity).FullName}) is not set.");
 
-            DbSet.Update(entity);
+            dbContext.Entry(entity).State = EntityState.Modified;
+            entity.ModificationTimestamp = DateTimeOffset.UtcNow;
         }
 
-        public Task UpdateAsync(TEntity entity)
+        public void Update(TEntity entity, Action<TEntity> update)
         {
             if (entity.Id == default)
-            {
-                entity.CreationTimestamp = DateTimeOffset.UtcNow;
-            }
-            else
-            {
-                entity.ModificationTimestamp = DateTimeOffset.UtcNow;
-            }
+                throw new PrimaryKeyException();
 
-            DbSet.Update(entity);
-            return Task.CompletedTask;
+            dbContext.Entry(entity).State = EntityState.Unchanged;
+            update(entity);
+
+            entity.ModificationTimestamp = DateTimeOffset.UtcNow;
         }
 
         public void Delete(TEntity entity, bool softDelete = false)
         {
+            if (entity.Id == default)
+                throw new PrimaryKeyException($"Primary key of entity ({typeof(TEntity).FullName}) is not set.");
+
             if (softDelete)
             {
+                dbContext.Entry(entity).State = EntityState.Modified;
+                
                 entity.DeletionTimestamp = DateTimeOffset.UtcNow;
                 entity.IsDeleted = true;
-                DbSet.Update(entity);
             }
             else
             {
-                DbSet.Remove(entity);
+                //dbContext.Remove(entity);
+                dbContext.Entry(entity).State = EntityState.Deleted;
             }
-        }
-
-        public Task DeleteAsync(TEntity entity, bool softDelete = false)
-        {
-            if (softDelete)
-            {
-                entity.DeletionTimestamp = DateTimeOffset.UtcNow;
-                entity.IsDeleted = true;
-                DbSet.Update(entity);
-            }
-            else
-            {
-                DbSet.Remove(entity);
-            }
-
-            return Task.CompletedTask;
         }
 
         #endregion

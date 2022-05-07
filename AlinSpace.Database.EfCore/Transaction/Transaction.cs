@@ -13,6 +13,9 @@ namespace AlinSpace.Database.EfCore
         {
             Context = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
             this.repositoryRegistry = repositoryRegistry ?? throw new ArgumentNullException(nameof(repositoryRegistry));
+
+            Context.ChangeTracker.LazyLoadingEnabled = false;
+            Context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         public DbContext Context { get; private set; }
@@ -25,11 +28,13 @@ namespace AlinSpace.Database.EfCore
         public void Commit()
         {
             Context.SaveChanges();
+            Context.ChangeTracker.Clear();
         }
 
         public async Task CommitAsync(CancellationToken cancellationToken = default)
         {
             await Context.SaveChangesAsync(cancellationToken);
+            Context.ChangeTracker.Clear();
         }
 
         bool disposed;

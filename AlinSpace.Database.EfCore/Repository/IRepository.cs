@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,9 +20,8 @@ namespace AlinSpace.Database.EfCore
         /// <summary>
         /// Start new query.
         /// </summary>
-        /// <param name="tracking">Tracking.</param>
         /// <returns>Queryable.</returns>
-        IQueryable<TEntity> NewQuery(bool tracking = false);
+        IQueryable<TEntity> NewQuery();
 
         #region Crud
 
@@ -69,6 +69,9 @@ namespace AlinSpace.Database.EfCore
         /// Creates the entity.
         /// </summary>
         /// <param name="entity">Entity to create.</param>
+        /// <remarks>
+        /// Primary key of the entity will be set when committing the changes.
+        /// </remarks>
         void Create(TEntity entity);
 
         /// <summary>
@@ -81,25 +84,55 @@ namespace AlinSpace.Database.EfCore
         /// Creates or updates the entity.
         /// </summary>
         /// <param name="entity">Entity to create or update.</param>
+        /// <remarks>
+        /// Primary key of the entity will be set when committing the changes.
+        /// If the primary key is not set, then a new entity will be created.
+        /// If the primary key is set, then only the changed fields of the entity will be updated.
+        /// </remarks>
         void CreateOrUpdate(TEntity entity);
 
         /// <summary>
         /// Creates or updates the entity asynchronously.
         /// </summary>
         /// <param name="entity">Entity to create or update.</param>
+        /// <remarks>
+        /// If the primary key is not set, then a new entity will be created.
+        /// If the primary key is set, then only the changed fields of the entity will be updated.
+        /// </remarks>
         Task CreateOrUpdateAsync(TEntity entity);
+
+        /// <summary>
+        /// Creates or updates the entity asynchronously.
+        /// </summary>
+        /// <param name="entity">Entity to create or update.</param>
+        /// <param name="update">Update action.</param>
+        /// <remarks>
+        /// If the primary key is not set, then a new entity will be created.
+        /// If the primary key is set, then only the changed fields of the entity will be updated.
+        /// <paramref name="update"/> action will be called on create and update.
+        /// </remarks>
+        Task CreateOrUpdateAsync(TEntity entity, Action<TEntity> update);
 
         /// <summary>
         /// Update the entity.
         /// </summary>
         /// <param name="entity">Entity to update.</param>
+        /// <remarks>
+        /// Primary key of the entity can't be null.
+        /// All fields will be updated.
+        /// </remarks>
         void Update(TEntity entity);
 
         /// <summary>
-        /// Update the entity asynchronously.
+        /// Update the entity.
         /// </summary>
         /// <param name="entity">Entity to update.</param>
-        Task UpdateAsync(TEntity entity);
+        /// <param name="update">Update action.</param>
+        /// <remarks>
+        /// Primary key of the entity can't be null.
+        /// Only changed fields will be updated.
+        /// </remarks>
+        void Update(TEntity entity, Action<TEntity> update);
 
         /// <summary>
         /// Delete the entity.
@@ -107,13 +140,6 @@ namespace AlinSpace.Database.EfCore
         /// <param name="entity">Entity to delete.</param>
         /// <param name="softDelete">Flag indicates soft deletion.</param>
         void Delete(TEntity entity, bool softDelete = false);
-
-        /// <summary>
-        /// Delete the entity.
-        /// </summary>
-        /// <param name="entity">Entity to delete.</param>
-        /// <param name="softDelete">Flag indicates soft deletion.</param>
-        Task DeleteAsync(TEntity entity, bool softDelete = false);
 
         #endregion
 
