@@ -71,18 +71,12 @@ namespace AlinSpace.Database.EfCore
 
         public void Create(TEntity entity)
         {
-            if (entity.Id != default)
-                throw new PrimaryKeyException();
-
             entity.CreationTimestamp = DateTimeOffset.UtcNow;
             DbSet.Add(entity);
         }
 
         public async Task CreateAsync(TEntity entity)
         {
-            if (entity.Id != default)
-                throw new PrimaryKeyException($"Primary key of entity ({typeof(TEntity).FullName}) set before creation.");
-
             await DbSet.AddAsync(entity);
             entity.CreationTimestamp = DateTimeOffset.UtcNow;
         }
