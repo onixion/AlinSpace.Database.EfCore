@@ -158,8 +158,8 @@ namespace AlinSpace.Database.EfCore
             }
             else
             {
-                //dbContext.Remove(entity);
-                dbContext.Entry(entity).State = EntityState.Deleted;
+                dbContext.Remove(entity);
+                //dbContext.Entry(entity).State = EntityState.Deleted;
             }
         }
 
