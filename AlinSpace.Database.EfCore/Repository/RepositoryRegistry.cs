@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 
 namespace AlinSpace.Database.EfCore
 {
-    class RepositoryRegistry
+    sealed class RepositoryRegistry
     {
-        private readonly IDictionary<Type, Lazy<object>> repositories = new Dictionary<Type, Lazy<object>>();
+        private readonly ConcurrentDictionary<Type, Lazy<object>> repositories = new ConcurrentDictionary<Type, Lazy<object>>();
 
         public void Register(Type entityType, Lazy<object> repositoryProvider)
         {
-            repositories[entityType] = repositoryProvider;
+            repositories.AddOrUpdate(entityType, repositoryProvider, (entityType, currentRepositoryProvider) => repositoryProvider);
         }
 
         public IRepository<TEntity> GetRepository<TEntity>() where TEntity : class, IEntity

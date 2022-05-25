@@ -13,6 +13,11 @@ namespace AlinSpace.Database.EfCore
     public interface IRepository<TEntity> where TEntity : class, IEntity
     {
         /// <summary>
+        /// Gets the DB context.
+        /// </summary>
+        DbContext DbContext { get; }
+
+        /// <summary>
         /// Gets the DB set.
         /// </summary>
         DbSet<TEntity> DbSet { get; }

@@ -6,15 +6,16 @@ namespace AlinSpace.Database.EfCore.Testing.Models
 {
     public class Book : AbstractEntity
     {
-        public ICollection<Page> Pages { get; set; }
+        public IList<Page> Pages { get; set; } = new List<Page>();
 
-        public override void OnModelCreating(ModelBuilder modelBuilder, Type entityType, string entityName = null)
+        public string Name { get; set; }
+
+        protected override void CreateModel(ModelBuilder modelBuilder, Type entityType)
         {
-            base.OnModelCreating(modelBuilder, entityType, entityName);
-
             modelBuilder.Entity<Book>()
                 .HasMany(x => x.Pages)
-                .WithOne(x => x.Book)
+                .WithOne(x => x.OwnedByBook)
+                .HasForeignKey(x => x.OwnedByBookId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

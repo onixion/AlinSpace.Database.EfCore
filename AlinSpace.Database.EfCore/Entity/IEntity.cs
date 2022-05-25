@@ -63,10 +63,6 @@ namespace AlinSpace.Database.EfCore
         /// </summary>
         /// <param name="modelBuilder">Model builder.</param>
         /// <param name="entityType">Type of entity.</param>
-        /// <param name="entityName">Optional name of entity.</param>
-        /// <remarks>
-        /// If <paramref name="entityName"/> is not set, the name of the type will be taken.
-        /// </remarks>
-        void OnModelCreating(ModelBuilder modelBuilder, Type entityType, string entityName = null);
+        void OnModelCreating(ModelBuilder modelBuilder, Type entityType);
     }
 }

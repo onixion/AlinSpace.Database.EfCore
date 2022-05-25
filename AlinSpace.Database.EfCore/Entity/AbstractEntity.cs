@@ -61,18 +61,12 @@ namespace AlinSpace.Database.EfCore
         /// </summary>
         /// <param name="modelBuilder">Model builder.</param>
         /// <param name="entityType">Type of entity.</param>
-        /// <param name="entityName">Optional name of entity.</param>
-        /// <remarks>
-        /// If <paramref name="entityName"/> is not set, the name of the type will be taken.
-        /// </remarks>
-        public virtual void OnModelCreating(ModelBuilder modelBuilder, Type entityType, string entityName = null)
+        public void OnModelCreating(ModelBuilder modelBuilder, Type entityType)
         {
-            entityName ??= entityType.Name;
-
             // Table-per-type inheritance handling.
             modelBuilder
                 .Entity(entityType)
-                .ToTable(entityName);
+                .ToTable(entityType.FullName);
 
             modelBuilder
                 .Entity(entityType)
@@ -89,6 +83,10 @@ namespace AlinSpace.Database.EfCore
                 .Property(nameof(IsDeleted))
                 .HasDefaultValue(false)
                 .IsRequired(true);
+        }
+
+        protected virtual void CreateModel(ModelBuilder modelBuilder, Type entityType)
+        {
         }
     }
 }

@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace AlinSpace.Database.EfCore
 {
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
+    public sealed class Repository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
     {
-        private readonly DbContext dbContext;
-
-        public Repository(DbContext dbContext, DbSet<TEntity> dbSet)
-        {
-            this.dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-            DbSet = dbSet ?? throw new ArgumentNullException(nameof(dbSet));
-        }
+        public DbContext DbContext { get; private set; }
 
         public DbSet<TEntity> DbSet { get; private set; }
 
+        public Repository(DbContext dbContext, DbSet<TEntity> dbSet)
+        {
+            DbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+            DbSet = dbSet ?? throw new ArgumentNullException(nameof(dbSet));
+        }
+       
         public IQueryable<TEntity> NewQuery()
         {
             return DbSet.AsNoTracking();
@@ -29,8 +29,9 @@ namespace AlinSpace.Database.EfCore
 
         public TEntity Get(long id, QueryOperation<TEntity> includer = null)
         {
-            var query = NewQuery().Where(x => x.Id == id);
+            var query = NewQuery();
 
+            query = query.Where(x => x.Id == id);
             query = includer?.Invoke(query) ?? query;
 
             return query.First();
@@ -38,8 +39,9 @@ namespace AlinSpace.Database.EfCore
 
         public TEntity GetOrDefault(long id, QueryOperation<TEntity> includer = null)
         {
-            var query = NewQuery().Where(x => x.Id == id);
+            var query = NewQuery();
 
+            query = query.Where(x => x.Id == id);
             query = includer?.Invoke(query) ?? query;
 
             return query.FirstOrDefault();
@@ -51,8 +53,9 @@ namespace AlinSpace.Database.EfCore
 
         public async Task<TEntity> GetAsync(long id, QueryOperation<TEntity> includer = null)
         {
-            var query = NewQuery().Where(x => x.Id == id);
+            var query = NewQuery();
 
+            query = query.Where(x => x.Id == id);
             query = includer?.Invoke(query) ?? query;
 
             return await query.FirstAsync();
@@ -60,8 +63,9 @@ namespace AlinSpace.Database.EfCore
 
         public async Task<TEntity> GetOrDefaultAsync(long id, QueryOperation<TEntity> includer = null)
         {
-            var query = NewQuery().Where(x => x.Id == id);
+            var query = NewQuery();
 
+            query = query.Where(x => x.Id == id);
             query = includer?.Invoke(query) ?? query;
 
             return await query.FirstOrDefaultAsync();
@@ -85,12 +89,12 @@ namespace AlinSpace.Database.EfCore
         {
             if (entity.Id == default)
             {
-                dbContext.Entry(entity).State = EntityState.Added;
+                DbContext.Entry(entity).State = EntityState.Added;
                 entity.CreationTimestamp = DateTimeOffset.UtcNow;
             }
             else
             {
-                dbContext.Entry(entity).State = EntityState.Modified;
+                DbContext.Entry(entity).State = EntityState.Modified;
                 entity.ModificationTimestamp = DateTimeOffset.UtcNow;
             }
         }
@@ -104,7 +108,7 @@ namespace AlinSpace.Database.EfCore
             }
             else
             {
-                dbContext.Entry(entity).State = EntityState.Modified;
+                DbContext.Entry(entity).State = EntityState.Modified;
                 entity.ModificationTimestamp = DateTimeOffset.UtcNow;
             }
         }
@@ -117,7 +121,7 @@ namespace AlinSpace.Database.EfCore
             }
             else
             {
-                dbContext.Entry(entity).State = EntityState.Unchanged;
+                DbContext.Entry(entity).State = EntityState.Unchanged;
             }
 
             update(entity);
@@ -129,7 +133,7 @@ namespace AlinSpace.Database.EfCore
             if (entity.Id == default)
                 throw new PrimaryKeyException($"Primary key of entity ({typeof(TEntity).FullName}) is not set.");
 
-            dbContext.Entry(entity).State = EntityState.Modified;
+            DbContext.Entry(entity).State = EntityState.Modified;
             entity.ModificationTimestamp = DateTimeOffset.UtcNow;
         }
 
@@ -138,7 +142,7 @@ namespace AlinSpace.Database.EfCore
             if (entity.Id == default)
                 throw new PrimaryKeyException();
 
-            dbContext.Entry(entity).State = EntityState.Unchanged;
+            DbContext.Entry(entity).State = EntityState.Unchanged;
             update(entity);
 
             entity.ModificationTimestamp = DateTimeOffset.UtcNow;
@@ -151,14 +155,14 @@ namespace AlinSpace.Database.EfCore
 
             if (softDelete)
             {
-                dbContext.Entry(entity).State = EntityState.Modified;
+                DbContext.Entry(entity).State = EntityState.Modified;
                 
                 entity.DeletionTimestamp = DateTimeOffset.UtcNow;
                 entity.IsDeleted = true;
             }
             else
             {
-                dbContext.Remove(entity);
+                DbContext.Remove(entity);
                 //dbContext.Entry(entity).State = EntityState.Deleted;
             }
         }
@@ -172,9 +176,7 @@ namespace AlinSpace.Database.EfCore
             var query = NewQuery();
 
             query = filter?.Invoke(query) ?? query;
-            
             query = pager?.TakePage(query) ?? query;
-            
             query = includer?.Invoke(query) ?? query;
 
             return query.ToList();
@@ -185,9 +187,7 @@ namespace AlinSpace.Database.EfCore
             var query = NewQuery();
 
             query = filter?.Invoke(query) ?? query;
-
             query = pager?.TakePage(query) ?? query;
-
             query = includer?.Invoke(query) ?? query;
 
             return await query.ToListAsync();
@@ -202,7 +202,6 @@ namespace AlinSpace.Database.EfCore
             var query = NewQuery();
 
             query = filter?.Invoke(query) ?? query;
-
             query = includer?.Invoke(query) ?? query;
 
             return query.First();
@@ -213,7 +212,6 @@ namespace AlinSpace.Database.EfCore
             var query = NewQuery();
 
             query = filter?.Invoke(query) ?? query;
-
             query = includer?.Invoke(query) ?? query;
 
             return query.FirstOrDefault();
@@ -228,7 +226,6 @@ namespace AlinSpace.Database.EfCore
             var query = NewQuery();
 
             query = filter?.Invoke(query) ?? query;
-
             query = includer?.Invoke(query) ?? query;
 
             return await query.FirstAsync();
@@ -239,7 +236,6 @@ namespace AlinSpace.Database.EfCore
             var query = NewQuery();
 
             query = filter?.Invoke(query) ?? query;
-
             query = includer?.Invoke(query) ?? query;
 
             return await query.FirstOrDefaultAsync();
