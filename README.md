@@ -9,32 +9,46 @@ In order to keep the library simple, some decisions have been made:
 
 # Example
 
+First create a database context like this:
+
+```csharp
+public class MyDatabaseContext : AbstractDbContext
+{
+    public DbSet<Book> Books { get; set; }
+
+    public MyDatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
+    {
+    }
+}
+```
+Then create the options and setup the transaction like this:
+
  ```csharp
- // Prepare database context options.
- var options = optionsBuilder.Build();
+// Prepare database context options.
+var options = optionsBuilder.Build();
  
 // Create the transaction object.
-var transaction = TransactionFactory.Create<MyDbContext>(options);
+var transaction = TransactionFactory.Create<MyDatabaseContext>(options);
 
 // Get repository.
-var userRepository = transaction.GetRepository<User>();
+var bookRepository = transaction.GetRepository<Book>();
 
 // Create entity.
-userRepository.Create(...);
+bookRepository.Create(...);
 // Get entity.
-userRepository.Get(...);
+bookRepository.Get(...);
 // Update entity.
-userRepository.Update(...);
+bookRepository.Update(...);
 // Delete entity.
-userRepository.Delete(...);
+bookRepository.Delete(...);
 
 // Find entity.
-userRepository.Find(...);
+bookRepository.Find(...);
 // Find many entities.
-userRepository.FindMany(...);
+bookRepository.FindMany(...);
 
-// Create custom query.
-var query = userRepository.NewQuery();
+// Create a custom query.
+var query = bookRepository.NewQuery();
 
 // Commit changes.
 transaction.Commit();
